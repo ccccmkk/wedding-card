@@ -412,7 +412,7 @@
                 <div class="container">
                     <div class="col text-center">
                         <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
-                        <div id="comments"></div>
+                        <!--div id="comments"></div-->
                         <br>
                         <div class="row">
                             <div class="col text-center">
@@ -466,15 +466,171 @@
 <script src="js/ekko-lightbox.min.js"></script>
 <script src="scripts/main.js"></script>
 
-<div class="bottom_right"><i class="fa fa-arrow-up fa-2x" id="go-to-top"></i>
+<!-- ...body 태그 바로 아래에 추가... -->
+<style>
+.music-top {
+    position:fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    background: rgba(255,255,255,0.85);
+    border-radius: 30px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display:flex;
+    align-items:center;
+    gap: 1px;
+}
+#player {
+    width: 300px;
+    transition: width 0.2s;
+}
+.music-top button {
+    font-size: 8px;
+    margin-left: 8px;
+    background: #fff;
+    border: 1px solid #b48e5c;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    color: #b48e5c;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.2s;
+}
+.music-top button:hover {
+    background: #f5ecd8;
+}
+</style>
+<div class="music-top">
+    <audio id="player" src="mus.mp3" controls></audio>
+    <button id="decrease-size" title="작게">－</button>
+    <button id="increase-size" title="크게">＋</button>
 </div>
-
+<!-- ...existing code... -->
+<script>
+  // 음악 플레이어 크기 조절 기능
+  const audioElem = document.getElementById('player');
+  let width = 300;
+  document.getElementById('decrease-size').onclick = function() {
+    width = 0;
+    audioElem.style.width = width + 'px';
+  };
+  document.getElementById('increase-size').onclick = function() {
+    width = 200;
+    audioElem.style.width = width + 'px';
+  };
+</script>
+<!-- ...existing code... -->
+<!-- ...기존 .bottom_left div는 삭제 또는 주석처리 해주세요...
 <div class="bottom_left">
-    <audio id="player" src="mus.mp3"></audio>
+    <audio id="player" src="mus.mp3" autoplay muted></audio>
     <div>
-        <i class="fa fa-music fa-2x" onclick="document.getElementById('player').play()"></i>
+        <i class="fa fa-music fa-2x" onclick="document.getElementById('player').muted=false;document.getElementById('player').play()"></i>
     </div>
 </div>
+-->
+
+<!-- 버튼(어디든) -->
+<button id="openGuestbook" class="btn btn-primary">축하 메시지</button>
+
+<!-- 모달 -->
+<div id="guestbookModal" style="position:fixed; inset:0; display:none; background:rgba(0,0,0,.5); z-index:9999;">
+  <div style="position:relative; margin:4vh auto; width:min(92vw, 840px); background:#fff; border-radius:16px; max-height:92vh; display:flex; flex-direction:column;">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid #eee;">
+      <strong>축하 메시지 ✨</strong>
+      <button id="closeGuestbook" aria-label="close" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <!-- 입력 폼 -->
+    <form id="guestbookForm" style="padding:12px 18px; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start; border-bottom:1px solid #f3f3f3;">
+      <input id="gbName" name="name" required placeholder="이름" style="padding:10px; border:1px solid #ddd; border-radius:8px;">
+      <button class="btn" style="padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#f6f6f6;">등록</button>
+      <textarea id="gbMsg" name="message" required placeholder="메시지를 입력하세요" rows="3" style="grid-column:1 / -1; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
+
+      <!-- 허니팟(숨김) -->
+      <input type="text" name="phone" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
+    </form>
+
+    <!-- 목록 -->
+    <div id="guestbookList" style="padding:16px 18px; overflow:auto;"></div>
+  </div>
+</div>
+
+<script>
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxI0X7HBwTcmvbTOsBSqgSfNc4f0W7Aoiwwv_TO_YOMnu3206uavmh_OR7zsqmQiBAl/exec';
+
+  const modal = document.getElementById('guestbookModal');
+  const listEl = document.getElementById('guestbookList');
+
+  document.getElementById('openGuestbook').addEventListener('click', () => {
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // 음악 유지, 배경 스크롤 잠금
+    loadComments();
+  });
+  document.getElementById('closeGuestbook').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  function closeModal(){ modal.style.display='none'; document.body.style.overflow=''; }
+
+  async function loadComments() {
+  const listEl = document.getElementById('guestbookList');
+  listEl.textContent = '불러오는 중...';
+  try {
+    const res = await fetch(GAS_URL);     // 헤더 없이 GET
+    if (!res.ok) throw new Error('fetch failed');
+    const rows = await res.json();        // [{timestamp,name,message}, ...]
+    if (!rows.length) {
+      listEl.innerHTML = '<div style="color:#777; padding:24px; text-align:center; border:1px dashed #ddd; border-radius:12px;">아직 메시지가 없습니다. 첫 메시지를 남겨보세요!</div>';
+      return;
+    }
+    listEl.innerHTML = rows.map(renderCard).join('');
+  } catch (e) {
+    console.error(e);
+    listEl.textContent = '메시지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+  }
+}
+
+function renderCard(row) {
+  const ts = new Date(row.timestamp).toLocaleString();
+  return `
+    <div style="border:1px solid #eee; border-radius:16px; padding:12px 14px; margin:10px 0;">
+      <div style="display:flex; justify-content:space-between; gap:12px; margin-bottom:6px;">
+        <strong>${escapeHtml(row.name)}</strong>
+        <small style="color:#666;">${ts}</small>
+      </div>
+      <div style="white-space:pre-wrap; line-height:1.5;">${escapeHtml(row.message)}</div>
+    </div>
+  `;
+}
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+document.getElementById('guestbookForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('gbName').value.trim();
+  const message = document.getElementById('gbMsg').value.trim();
+  if (!name || !message) return;
+
+  try {
+    const body = new URLSearchParams({ name, message, phone: '' }); // phone=허니팟
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body
+    });
+    const json = await res.json();
+    if (json.ok) {
+      document.getElementById('gbMsg').value = '';
+      loadComments(); // 등록 후 즉시 갱신
+    } else {
+      alert('등록 실패: ' + (json.error || 'unknown'));
+    }
+  } catch (e) {
+    console.error(e);
+    alert('등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+  }
+});
+</script>
+
 
 </body>
 </html>
