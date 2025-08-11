@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>축하 메시지</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; max-width: 840px; margin: 40px auto; padding: 0 16px; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap: wrap; margin-bottom: 24px; }
+    h1 { margin: 0; }
+    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #ddd; text-decoration: none; display:inline-block }
+    .card { border:1px solid #eee; border-radius:16px; padding:16px; margin:12px 0; box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+    .meta { color:#666; font-size:12px; margin-bottom:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .empty { color:#777; padding: 24px; text-align:center; border:1px dashed #ddd; border-radius:12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>축하 메시지 ✨</h1>
+    <a id="newBtn" class="btn" target="_blank" rel="noopener">메시지 남기기(PR)</a>
+  </header>
+
+  <div id="list">불러오는 중...</div>
+
+  <script>
+    // 이 레포에 맞춰 고정
+    const OWNER  = 'ccccmkk';
+    const REPO   = 'wedding-card';
+    const BRANCH = 'main'; // 기본 브랜치 이름
+
+    // “메시지 남기기” 버튼: 새 파일(PR) 작성 페이지로 이동
+    const today = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+    const filename = `messages/${today}-your-name.md`;  // 손님이 your-name을 바꾸게
+    const template = [
+      '# 축하메시지',
+      '',
+      '여기에 메시지를 남겨주세요 🎉',
+      '',
+      '> 예: 행복하세요! - 홍길동'
+    ].join('\n');
+    const newUrl =
+      `https://github.com/${OWNER}/${REPO}/new/${BRANCH}?` +
+      `filename=${encodeURIComponent(filename)}` +
+      `&value=${encodeURIComponent(template)}`;
+    document.getElementById('newBtn').href = newUrl;
+
+    // 목록 불러오기
+    const listEl = document.getElementById('list');
+
+    async function fetchMessages() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/messages?ref=${BRANCH}`);
+        if (res.status === 404) {
+          listEl.innerHTML = '<div class="empty">아직 메시지가 없습니다. 첫 번째 메시지를 남겨보세요!</div>';
+          return;
+        }
+        if (!res.ok) throw new Error('list fetch failed');
+        const files = (await res.json())
+          .filter(f => f.type === 'file' && /\.md$/i.test(f.name))
+          .sort((a,b)=> b.name.localeCompare(a.name)); // 파일명 기준 최신 우선
+
+        if (files.length === 0) {
+          listEl.innerHTML = '<div class="empty">아직 메시지가 없습니다. 첫 번째 메시지를 남겨보세요!</div>';
+          return;
+        }
+
+        listEl.innerHTML = '';
+        for (const f of files) {
+          const raw = await fetch(f.download_url).then(r=>r.text()).catch(()=> '');
+          const card = document.createElement('div');
+          card.className = 'card';
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.textContent = f.name;
+          const body = document.createElement('div');
+          body.innerHTML = marked.parse(raw || '*내용 없음*');
+          card.appendChild(meta);
+          card.appendChild(body);
+          listEl.appendChild(card);
+        }
+      } catch (e) {
+        console.error(e);
+        listEl.textContent = '메시지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+      }
+    }
+
+    fetchMessages();
+  </script>
+</body>
+</html>
