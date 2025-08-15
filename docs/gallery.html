@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>포토 갤러리</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #fafafa; --card:#fff; --line:#eaeaea; --txt:#111; --sub:#666;
+      --primary:#4f46e5;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:'Noto Sans KR',system-ui,-apple-system,Segoe UI,Roboto; background:var(--bg); color:var(--txt)}
+
+    header{position:sticky; top:0; z-index:10; background:linear-gradient(#fff, rgba(255,255,255,.9)); border-bottom:1px solid var(--line)}
+    .container{max-width:1100px; margin:0 auto; padding:16px}
+    .title{font-size:28px; font-weight:700; margin:6px 0}
+
+    /* 그리드 */
+    .grid{
+      columns: 1 280px; /* masonry-like */
+      column-gap: 16px;
+      padding: 16px;
+    }
+    @media (min-width:640px){ .grid{ columns: 2 280px; } }
+    @media (min-width:940px){ .grid{ columns: 3 280px; } }
+
+    .card{
+      break-inside: avoid; background:var(--card); border:1px solid var(--line); border-radius:14px;
+      margin:0 0 16px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.06);
+      transition:transform .12s ease, box-shadow .12s ease;
+      cursor: zoom-in;
+    }
+    .card:hover{ transform: translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.1) }
+    .card img{ display:block; width:100%; height:auto }
+
+    /* 라이트박스 */
+    .lightbox{
+      position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.85);
+      z-index:100;
+    }
+    .lightbox.open{ display:grid; }
+    .lightbox img{ max-width:min(92vw, 1200px); max-height:82vh; border-radius:12px; background:#000 }
+    .controls{
+      position:fixed; inset:0; pointer-events:none;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 18px;
+    }
+    .btn{
+      pointer-events:auto; user-select:none; border:none; background:rgba(255,255,255,.12);
+      color:#fff; width:46px; height:46px; border-radius:999px; font-size:20px; display:grid; place-items:center;
+      cursor:pointer; transition:background .15s ease;
+    }
+    .btn:hover{ background:rgba(255,255,255,.2) }
+    .btn:active{ transform:scale(.96) }
+    .btn-close{ position:fixed; top:14px; right:14px; }
+    .caption{position:fixed; bottom:14px; left:50%; transform:translateX(-50%); color:#fff; font-size:14px; opacity:.9}
+
+    /* 상단 툴바 */
+    .toolbar{ display:flex; align-items:center; gap:10px }
+    .toolbtn{ padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer }
+    .toolbtn:hover{ background:#f5f5f5 }
+    a.back{ text-decoration:none; color:var(--primary); font-weight:600 }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div class="title">포토 갤러리</div>
+      <div class="toolbar">
+        <a class="back" href="./">← 메인으로</a>
+        <button id="openSlideshow" class="toolbtn">슬라이드 쇼</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <!-- 라이트박스 -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <img id="lightboxImg" alt="">
+    <button class="btn btn-close" id="btnClose" aria-label="닫기">✕</button>
+    <div class="controls">
+      <button class="btn" id="btnPrev" aria-label="이전">‹</button>
+      <button class="btn" id="btnNext" aria-label="다음">›</button>
+    </div>
+    <div class="caption" id="caption"></div>
+  </div>
+
+  <script>
+    // 1) 갤러리 이미지 목록 (원하는 만큼 추가하세요)
+    const images = [
+      {src:'images/pic2.jpeg', alt:'Pic 2'},
+      {src:'images/pic3.jpeg', alt:'Pic 3'},
+      {src:'images/pic4.jpeg', alt:'Pic 4'},
+      {src:'images/pic6.jpeg', alt:'Pic 6'},
+      {src:'images/pic7.jpeg', alt:'Pic 7'},
+      {src:'images/pic5.jpeg', alt:'Pic 5'},
+
+      // 추가 예시:
+      // {src:'images/pic8.jpeg', alt:'Pic 8'},
+      // {src:'images/pic9.jpeg', alt:'Pic 9'},
+    ];
+
+    // 2) 그리드 렌더
+    const grid = document.getElementById('grid');
+    grid.innerHTML = images.map((img, i) => `
+      <figure class="card" data-i="${i}">
+        <img loading="lazy" src="${img.src}" alt="${img.alt}">
+      </figure>
+    `).join('');
+
+    // 3) 라이트박스
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const caption = document.getElementById('caption');
+    let current = 0, timer = null;
+
+    function openLB(i=0){
+      current = (i+images.length)%images.length;
+      lbImg.src = images[current].src;
+      lbImg.alt = images[current].alt || '';
+      caption.textContent = `${current+1} / ${images.length}`;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      stopShow();
+    }
+    function closeLB(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      stopShow();
+    }
+    function next(n=1){ openLB(current + n); }
+    function prev(){ next(-1); }
+
+    // 클릭 바인딩
+    grid.addEventListener('click', (e)=>{
+      const card = e.target.closest('.card');
+      if (!card) return;
+      openLB(parseInt(card.dataset.i,10));
+    });
+    document.getElementById('btnClose').onclick = closeLB;
+    document.getElementById('btnNext').onclick = ()=>next(1);
+    document.getElementById('btnPrev').onclick = ()=>next(-1);
+    lb.addEventListener('click', (e)=>{ if (e.target === lb) closeLB(); });
+
+    // 키보드
+    window.addEventListener('keydown', (e)=>{
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLB();
+      if (e.key === 'ArrowRight') next(1);
+      if (e.key === 'ArrowLeft') next(-1);
+    });
+
+    // 4) 슬라이드 쇼
+    const openSlideBtn = document.getElementById('openSlideshow');
+    openSlideBtn.addEventListener('click', ()=>{
+      openLB(0);
+      startShow();
+    });
+    function startShow(){
+      stopShow();
+      timer = setInterval(()=> next(1), 2500);
+    }
+    function stopShow(){
+      if (timer){ clearInterval(timer); timer = null; }
+    }
+
+    // 5) 쿼리 파라미터로 초기 이미지 열기 (?i=숫자)
+    const params = new URLSearchParams(location.search);
+    if (params.has('i')) {
+      const idx = parseInt(params.get('i'),10);
+      if (!Number.isNaN(idx)) openLB(idx);
+    }
+  </script>
+</body>
+</html>

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>창민과 나연의 결혼식에 초대합니다</title>
     <meta content="김창민과 김나연의 결혼식에 와서 축하해주세요~!" name="description"/>
-    <meta property="og:image" content="images/pic2.jpeg">
+    <meta property="og:image" content="images/main-background.jpeg">
     <meta property="fb:app_id" content="781066922265598" />
     <meta property="fb:admins" content="Choi.Anderson"/>
     <link href="images/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
@@ -107,7 +107,7 @@
                 </div>
             </div>
         </div>
-        <div class="ww-nav-bar sticky-top bg-light">
+        <div class="ww-nav-bar fixed-top bg-light">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container">
                     <button aria-controls="ww-navbarNav" aria-expanded="false" aria-label="Toggle navigation"
@@ -122,6 +122,7 @@
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#gallery">Gallery</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#map">Map</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#comment">Comments</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#account">Account</a></li>
                         </ul>
                     </div>
                 </div>
@@ -173,9 +174,12 @@
                                 var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
                                 var minutes = Math.floor((diff / (1000 * 60)) % 60);
                                 var seconds = Math.floor((diff / 1000) % 60);
+                                
+                                // 두 자리수로 맞추기
+                                function pad(n) { return n < 10 ? '0' + n : n; }
                             
                                 document.getElementById('countdown').textContent =
-                                    "결혼식까지 " + days + "일 " + hours + " : " + minutes + " : " + seconds + " 남았습니다";
+                                    "결혼식까지 " + days + "일 " + pad(hours) + " : " + pad(minutes) + " : " + pad(seconds) + " 남았습니다";
                             }
                             updateCountdown();
                             setInterval(updateCountdown, 1000);
@@ -206,26 +210,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <div class="my-3">
-                            <div class="h4">식사</div>
-                            <ul>
-                                <li>
-                                    <i class="text-muted fas fa-map-marker-alt "></i>
-                                    <span class="pl-2 text-muted">부산 해운대 우동 센텀사이언스 파크 지하 1층 더파티 센텀점</span>
-                                </li>
-                                <li class="pt-2">
-                                    <i class="text-muted far fa-calendar-alt "></i>
-                                    <span class="pl-2 text-muted">2019년 5월 18일, 2:30PM - 4:30PM</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-sm-12">
-                        <div class="my-3"><img alt="Reception" class="img-fluid" src="images/reception.jpg"/></div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="ww-section" id="gallery">
@@ -233,6 +217,13 @@
                 <div class="container">
                     <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">포토 갤러리</h2>
                     <div class="ww-gallery">
+                            <!-- 선택: 전체 보기 버튼 -->
+                            <div class="text-center mt-3">
+                                <a href="gallery.html" class="btn btn-primary">전체 갤러리 보기</a>
+                            </div>
+                            
+                            <!-- 갤러리 카드들 -->
+                        <div class="card-columns mt-4"></div>
                         <div class="card-columns">
                             <div class="card" data-groups="[&quot;party&quot;,&quot;wedding&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
@@ -265,6 +256,7 @@
                                     <img alt="Gallery Pic 7" class="img-fluid" src="images/pic5.jpeg"/>
                                 </a>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -407,6 +399,176 @@
             </div>
         </div>
 
+        <!-- 마음 전하실 곳 -->
+        <section id="account" class="gift-section">
+        <h2 class="gift-title">마음 전하실 곳</h2>
+        <p class="gift-desc">필요하신 분들을 위해 안내드립니다. 참석이 어려우셔도 축복해주시는 그 마음 깊이 감사드립니다.</p>
+
+        <div class="gift-grid">
+            <!-- 신랑측 -->
+            <article class="gift-card groom">
+            <button class="gift-head" aria-expanded="false">
+                <span class="head-left">
+                <span class="leaf">❈</span>
+                <span class="head-title">신랑측</span>
+                </span>
+                <span class="chev"></span>
+            </button>
+
+            <div class="gift-body">
+                <!-- 항목 -->
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who"><b>신랑 김정훈</b></div>
+                    <div class="bank">토스뱅크 <span class="acct">1000-123-456789</span></div>
+                </div>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="1000-123-456789">계좌번호 복사</button>
+                </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who">혼주 <b>박미숙</b></div>
+                    <div class="bank">농협 <span class="acct">302-9876-5432-10</span></div>
+                </div>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="302-9876-5432-10">계좌번호 복사</button>
+                </div>
+                </div>
+            </div>
+            </article>
+
+            <!-- 신부측 -->
+            <article class="gift-card bride">
+            <button class="gift-head" aria-expanded="false">
+                <span class="head-left">
+                <span class="leaf">❈</span>
+                <span class="head-title">신부측</span>
+                </span>
+                <span class="chev"></span>
+            </button>
+
+            <div class="gift-body">
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who"><b>신부 김수연</b></div>
+                    <div class="bank">국민은행 <span class="acct">123-45-678910</span></div>
+                </div>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="123-45-678910">계좌번호 복사</button>
+                </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who">혼주 <b>이정자</b></div>
+                    <div class="bank">신한은행 <span class="acct">110-234-567890</span></div>
+                </div>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="110-234-567890">계좌번호 복사</button>
+                </div>
+                </div>
+            </div>
+            </article>
+        </div>
+
+        <div id="copyToast" class="copy-toast" role="status" aria-live="polite">복사되었습니다</div>
+        </section>
+
+        <style>
+        :root{
+        --sage:#e7eadf;        /* 신랑측 헤더 */
+        --sage-ink:#5a6b56;
+        --blush:#efe1dc;       /* 신부측 헤더 */
+        --blush-ink:#845d54;
+        --line:#e9e9e9;
+        --ink:#2b2b2b;
+        --sub:#6f6f6f;
+        --pay:#ffe000;         /* 카카오페이 노랑 */
+        }
+
+        .gift-section{padding:48px 16px}
+        .gift-title{font-family:'Noto Serif KR',serif; text-align:center; margin:0 0 10px}
+        .gift-desc{color:var(--sub); text-align:center; margin:0 0 28px; line-height:1.7}
+
+        .gift-grid{display:flex; gap:24px; max-width:1000px; margin:0 auto; flex-wrap:wrap; align-items:flex-start}
+        .gift-card{flex:1 1 420px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,.04)}
+
+        .gift-head{width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px;
+        padding:14px 16px; border:none; cursor:pointer; background:var(--sage); color:var(--sage-ink); font-weight:700}
+        .gift-card.bride .gift-head{background:var(--blush); color:var(--blush-ink)}
+
+        .head-left{display:flex; align-items:center; gap:10px}
+        .leaf{opacity:.8}
+        .head-title{font-family:'Noto Serif KR',serif}
+
+        .chev{width:18px; height:18px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .2s ease}
+        .gift-head[aria-expanded="true"] .chev{ transform:rotate(-135deg) }
+
+        .gift-body{display:none; padding:0}
+        .gift-row{display:flex; justify-content:space-between; gap:16px; padding:16px}
+        .divider{height:1px; background:var(--line)}
+        .gift-info{min-width:0}
+        .who{color:var(--ink); margin-bottom:4px}
+        .bank{color:var(--sub)}
+        .acct{font-weight:700; color:var(--ink)}
+
+        .gift-actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+        .btn{border:none; border-radius:999px; padding:10px 16px; font-weight:700; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.06)}
+        .btn.pay{background:var(--pay)}
+        .btn.ghost{background:#fff; border:1px solid var(--line)}
+        .btn:hover{filter:brightness(.98)}
+
+        .copy-toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#222; color:#fff; padding:8px 12px; border-radius:8px; opacity:0; pointer-events:none; transition:opacity .25s}
+        .copy-toast.show{opacity:1}
+
+        @media (max-width:640px){
+        .gift-row{flex-direction:column; align-items:flex-start}
+        .gift-actions{width:100%}
+        }
+        </style>
+
+        <script>
+        // 아코디언 열고닫기
+        document.querySelectorAll('.gift-head').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+            const body = btn.parentElement.querySelector('.gift-body');
+            body.style.display = expanded ? 'none' : 'block';
+        });
+        });
+
+        // 계좌번호 복사
+        const toast = document.getElementById('copyToast');
+        function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1400); }
+        document.querySelectorAll('.btn.ghost[data-copy]').forEach(b=>{
+        b.addEventListener('click', async ()=>{
+            try{
+            await navigator.clipboard.writeText(b.dataset.copy);
+            showToast();
+            }catch(e){
+            // 클립보드가 막힌 경우 input으로 폴백
+            const tmp = document.createElement('input');
+            tmp.value = b.dataset.copy; document.body.appendChild(tmp);
+            tmp.select(); document.execCommand('copy'); document.body.removeChild(tmp);
+            showToast();
+            }
+        });
+        });
+        </script>
+
+
+
         <div class="ww-section bg-light" id="comment">
             <div class="ww-photo-gallery">
                 <div class="container">
@@ -416,8 +578,229 @@
                         <br>
                         <div class="row">
                             <div class="col text-center">
-                                <a class="btn btn-primary btn-submit" href="./guestbook.html">
-                                    메시지 남기러 가기
+                                <!-- a class="btn btn-primary btn-submit" href="./guestbook.html"-->
+<!-- 토글 버튼 -->
+<button id="toggleGuestbook" class="btn btn-primary">메시지 보내기 버튼</button>
+<style>
+#toggleGuestbook {
+  display: none;
+}
+</style>
+<!-- 방명록 섹션 (메인에 인라인) -->
+<section id="guestbookSection" style="display:none; margin-top:16px;">
+  <!-- 입력 폼 -->
+  <form id="guestbookForm" style="padding:12px 18px; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start; border:1px solid #eee; border-radius:12px;">
+    <input id="gbName" name="name" required placeholder="이름" style="padding:10px; border:1px solid #ddd; border-radius:8px;">
+    <button class="btn" style="padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#f6f6f6;">등록</button>
+
+    <textarea id="gbMsg" name="message" required placeholder="메시지를 입력하세요" rows="3" style="grid-column:1 / -1; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
+
+    <!-- 비밀번호(삭제에 사용) -->
+    <input id="gbPwd" name="password" type="password" required placeholder="비밀번호(삭제 시 필요)" style="grid-column:1 / -1; padding:10px; border:1px solid #ddd; border-radius:8px;">
+
+    <!-- 허니팟(봇차단, 숨김) -->
+    <input type="text" name="phone" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
+  </form>
+
+  <!-- 목록 -->
+  <div id="guestbookList" style="padding:16px 0;"></div>
+</section>
+<style>
+  /* 전체 폰트 & 색상 */
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fafafa;
+    color: #222;
+  }
+
+  /* 방명록 섹션 */
+  #guestbookSection {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  /* 입력 폼 */
+  #guestbookForm {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  #guestbookForm input,
+  #guestbookForm textarea {
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #guestbookForm input:focus,
+  #guestbookForm textarea:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74,144,226,0.2);
+    outline: none;
+  }
+  #guestbookForm button {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #guestbookForm button:hover {
+    background: #3a78c2;
+  }
+/* 방명록 목록 영역 - 파스텔톤 배경 + 3컬럼 그리드 */
+#guestbookList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+
+/* 코르크 배경 + 흰색 반투명 오버레이 */
+background: 
+  linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+  url('images/cork.jpg') center center / cover no-repeat;
+
+/* 포스트잇 카드 스타일 */
+.gb--card {
+  background: #fff9c4; /* 파스텔 노랑 */
+  border: 1px solid #f0e68c;
+  border-radius: 6px;
+  padding: 14px 16px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  transform: rotate(-1.5deg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-height: 140px;
+}
+.gb--card:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.25);
+}
+
+/* 카드 안 글자 */
+.gb--card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: #333;
+}
+.gb--card small {
+  color: #555;
+  font-size: 12px;
+}
+.gb--card div {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+  /* 삭제 버튼 */
+  .gb-del {
+    background: transparent;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .gb-del:hover {
+    background: #ffecec;
+    color: #d9534f;
+  }
+</style>
+
+<!-- 공유/복사 영역 -->
+<div class="share-section">
+  <!-- 카카오톡 공유 -->
+  <a href="https://sharer.kakao.com/talk/friends/picker/link?url=https://mylove-wedding.info" target="_blank" class="share-btn kakao">
+    <span class="icon">💬</span>
+    카카오톡 공유하기
+  </a>
+  <!-- 링크 복사 -->
+  <button class="share-btn copy" data-link="https://mylove-wedding.info">
+    <span class="icon">🔗</span>
+    링크 복사하기
+  </button>
+</div>
+
+<style>
+.share-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 30px 0;
+}
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.share-btn .icon {
+  font-size: 18px;
+}
+.kakao {
+  background-color: #ffe812;
+  color: #3b1e1e;
+}
+.kakao:hover {
+  background-color: #ffeb33;
+}
+.copy {
+  background-color: #f5f5f5;
+  color: #333;
+}
+.copy:hover {
+  background-color: #e6e6e6;
+}
+
+/* 복사 완료 토스트 */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.toast.show {
+  opacity: 1;
+}
+</style>
+
+<!-- 복사 완료 메시지 -->
+<div id="toast" class="toast">링크가 복사되었습니다!</div>
+
+<script>
+// 링크 복사 기능
+document.querySelector('.copy').addEventListener('click', function() {
+  const link = this.dataset.link;
+  navigator.clipboard.writeText(link).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1500);
+  });
+});
+</script>
+
+
                                 </a>
                             </div>
                         </div>
@@ -466,61 +849,124 @@
 <script src="js/ekko-lightbox.min.js"></script>
 <script src="scripts/main.js"></script>
 
-<!-- ...body 태그 바로 아래에 추가... -->
 <style>
-.music-top {
-    position:fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 9999;
+  .music-top {
+    position: fixed; top: 20px; left: 20px; z-index: 9999;
     background: rgba(255,255,255,0.85);
-    border-radius: 30px;
-    padding: 8px 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display:flex;
-    align-items:center;
-    gap: 1px;
-}
-#player {
-    width: 300px;
-    transition: width 0.2s;
-}
-.music-top button {
-    font-size: 8px;
-    margin-left: 8px;
-    background: #fff;
-    border: 1px solid #b48e5c;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    color: #b48e5c;
-    cursor: pointer;
-    outline: none;
-    transition: background 0.2s;
-}
-.music-top button:hover {
-    background: #f5ecd8;
-}
+    border-radius: 30px; padding: 8px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* 기본 오디오 플레이어 숨김 */
+  #player { display: none; }
+
+  .music-btn {
+    font-size: 10px;
+    background: #fff; border: 1px solid #b48e5c;
+    width: 28px; height: 28px; border-radius: 50%;
+    color: #b48e5c; cursor: pointer;
+    transition: background .2s;
+  }
+  .music-btn:hover { background: #f5ecd8; }
+
+  .volume-slider {
+    -webkit-appearance: none; height: 6px; width: 30px;
+    background: #ddd; border-radius: 3px; outline: none; cursor: pointer;
+  }
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 14px; height: 14px; background: #b48e5c; border-radius: 50%;
+  }
+
+  /* 파동(이퀄라이저) */
+  .wave {
+    height: 22px; display: flex; align-items: end; gap: 3px; padding: 0 2px;
+  }
+  .bar {
+    width: 3px; height: 6px; border-radius: 2px; background: #b48e5c;
+    transform-origin: bottom; opacity: .9;
+    animation: eq 800ms infinite ease-in-out;
+    animation-play-state: paused; /* 기본 정지 */
+  }
+  /* 재생 중일 때만 동작 */
+  .wave.on .bar { animation-play-state: running; }
+
+  /* 각 바에 다른 딜레이/높이로 랜덤감 */
+  .bar:nth-child(1){ animation-delay: 0ms }
+  .bar:nth-child(2){ animation-delay: 120ms }
+  .bar:nth-child(3){ animation-delay: 240ms }
+  .bar:nth-child(4){ animation-delay: 360ms }
+  .bar:nth-child(5){ animation-delay: 480ms }
+
+  @keyframes eq {
+    0%, 100% { transform: scaleY(0.35) }
+    50%      { transform: scaleY(1) }
+  }
+
+  /* 사용자 ‘감속 모션’ 설정을 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    .bar { animation: none }
+  }
 </style>
-<div class="music-top">
-    <audio id="player" src="mus.mp3" controls></audio>
-    <button id="decrease-size" title="작게">－</button>
-    <button id="increase-size" title="크게">＋</button>
+
+<div class="music-top" role="region" aria-label="음악 컨트롤">
+  <button id="playPause" class="music-btn" aria-label="재생">▶</button>
+
+  <!-- 파동 애니메이션 (재생 중에만 on 클래스 부여) -->
+  <div id="wave" class="wave" aria-hidden="true">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </div>
+
+  <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="1" aria-label="볼륨">
 </div>
-<!-- ...existing code... -->
+
+<!-- 기본 컨트롤 없이 숨겨둔 오디오 -->
+<audio id="player" src="mus.mp3" preload="auto"></audio>
+
 <script>
-  // 음악 플레이어 크기 조절 기능
-  const audioElem = document.getElementById('player');
-  let width = 300;
-  document.getElementById('decrease-size').onclick = function() {
-    width = 0;
-    audioElem.style.width = width + 'px';
-  };
-  document.getElementById('increase-size').onclick = function() {
-    width = 200;
-    audioElem.style.width = width + 'px';
-  };
+  const audio = document.getElementById('player');
+  const playBtn = document.getElementById('playPause');
+  const vol = document.getElementById('volume');
+  const wave = document.getElementById('wave');
+
+  // 상태 반영
+  function setPlayingUI(playing){
+    playBtn.textContent = playing ? '⏸' : '▶';
+    playBtn.setAttribute('aria-label', playing ? '일시정지' : '재생');
+    wave.classList.toggle('on', playing);
+  }
+
+  // 버튼 토글
+  playBtn.addEventListener('click', async () => {
+    try {
+      if (audio.paused) { await audio.play(); } else { audio.pause(); }
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  // 오디오 이벤트에 맞춰 UI 업데이트
+  audio.addEventListener('play',  () => setPlayingUI(true));
+  audio.addEventListener('pause', () => setPlayingUI(false));
+  audio.addEventListener('ended', () => setPlayingUI(false));
+
+  // 볼륨
+  vol.addEventListener('input', () => { audio.volume = vol.value; });
+
+  // (선택) 자동 반복
+  // audio.loop = true;
+
+  // iOS 등 자동재생 정책 때문에 첫 사용자 상호작용 전에 play()가 막힐 수 있어요.
+  // 위처럼 버튼 클릭 시 play() 호출하도록 구성하면 안전합니다.
 </script>
+
+
+
 <!-- ...existing code... -->
 <!-- ...기존 .bottom_left div는 삭제 또는 주석처리 해주세요...
 <div class="bottom_left">
@@ -530,106 +976,135 @@
     </div>
 </div>
 -->
-
-<!-- 버튼(어디든) -->
-<button id="openGuestbook" class="btn btn-primary">축하 메시지</button>
-
-<!-- 모달 -->
-<div id="guestbookModal" style="position:fixed; inset:0; display:none; background:rgba(0,0,0,.5); z-index:9999;">
-  <div style="position:relative; margin:4vh auto; width:min(92vw, 840px); background:#fff; border-radius:16px; max-height:92vh; display:flex; flex-direction:column;">
-    <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid #eee;">
-      <strong>축하 메시지 ✨</strong>
-      <button id="closeGuestbook" aria-label="close" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
-    </div>
-
-    <!-- 입력 폼 -->
-    <form id="guestbookForm" style="padding:12px 18px; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start; border-bottom:1px solid #f3f3f3;">
-      <input id="gbName" name="name" required placeholder="이름" style="padding:10px; border:1px solid #ddd; border-radius:8px;">
-      <button class="btn" style="padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#f6f6f6;">등록</button>
-      <textarea id="gbMsg" name="message" required placeholder="메시지를 입력하세요" rows="3" style="grid-column:1 / -1; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
-
-      <!-- 허니팟(숨김) -->
-      <input type="text" name="phone" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
-    </form>
-
-    <!-- 목록 -->
-    <div id="guestbookList" style="padding:16px 18px; overflow:auto;"></div>
-  </div>
-</div>
-
 <script>
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxI0X7HBwTcmvbTOsBSqgSfNc4f0W7Aoiwwv_TO_YOMnu3206uavmh_OR7zsqmQiBAl/exec';
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxmq1oirgfr1hTm6BzppbGkJi8probMGkCSlJ37Aek6ihjpZn2farghFMysLLkQca5I/exec';
 
-  const modal = document.getElementById('guestbookModal');
-  const listEl = document.getElementById('guestbookList');
+  const section = document.getElementById('guestbookSection');
+  const listEl  = document.getElementById('guestbookList');
+  const nameEl  = document.getElementById('gbName');
+  const msgEl   = document.getElementById('gbMsg');
+  const pwdEl   = document.getElementById('gbPwd');
 
-  document.getElementById('openGuestbook').addEventListener('click', () => {
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // 음악 유지, 배경 스크롤 잠금
-    loadComments();
+
+  // 1) 토글: 버튼을 누르면 메인 내 섹션을 펼치고 목록 로딩
+  document.getElementById('toggleGuestbook').addEventListener('click', () => {
+    const open = section.style.display !== 'none';
+    section.style.display = open ? 'none' : 'block';
+    if (!open) loadComments();
   });
-  document.getElementById('closeGuestbook').addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-  function closeModal(){ modal.style.display='none'; document.body.style.overflow=''; }
 
-  async function loadComments() {
-  const listEl = document.getElementById('guestbookList');
-  listEl.textContent = '불러오는 중...';
-  try {
-    const res = await fetch(GAS_URL);     // 헤더 없이 GET
-    if (!res.ok) throw new Error('fetch failed');
-    const rows = await res.json();        // [{timestamp,name,message}, ...]
-    if (!rows.length) {
-      listEl.innerHTML = '<div style="color:#777; padding:24px; text-align:center; border:1px dashed #ddd; border-radius:12px;">아직 메시지가 없습니다. 첫 메시지를 남겨보세요!</div>';
-      return;
-    }
-    listEl.innerHTML = rows.map(renderCard).join('');
-  } catch (e) {
-    console.error(e);
-    listEl.textContent = '메시지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
-  }
-}
-
-function renderCard(row) {
-  const ts = new Date(row.timestamp).toLocaleString();
-  return `
-    <div style="border:1px solid #eee; border-radius:16px; padding:12px 14px; margin:10px 0;">
-      <div style="display:flex; justify-content:space-between; gap:12px; margin-bottom:6px;">
-        <strong>${escapeHtml(row.name)}</strong>
-        <small style="color:#666;">${ts}</small>
-      </div>
-      <div style="white-space:pre-wrap; line-height:1.5;">${escapeHtml(row.message)}</div>
-    </div>
-  `;
-}
-function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-document.getElementById('guestbookForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('gbName').value.trim();
-  const message = document.getElementById('gbMsg').value.trim();
-  if (!name || !message) return;
-
-  try {
-    const body = new URLSearchParams({ name, message, phone: '' }); // phone=허니팟
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-      body
-    });
-    const json = await res.json();
-    if (json.ok) {
-      document.getElementById('gbMsg').value = '';
-      loadComments(); // 등록 후 즉시 갱신
-    } else {
-      alert('등록 실패: ' + (json.error || 'unknown'));
-    }
-  } catch (e) {
-    console.error(e);
-    alert('등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-  }
+  // 페이지 로드 시 자동으로 펼치기 + 데이터 로드
+window.addEventListener('DOMContentLoaded', () => {
+  section.style.display = 'block';
+  loadComments();
 });
+
+  // 2) 목록 불러오기
+  async function loadComments() {
+    listEl.textContent = '불러오는 중...';
+    try {
+      const res = await fetch(GAS_URL); // GET
+      if (!res.ok) throw new Error('fetch failed');
+      const rows = await res.json();    // [{id,name,message,timestamp}, ...]
+      if (!rows.length) {
+        listEl.innerHTML = '<div style="color:#777; padding:24px; text-align:center; border:1px dashed #ddd; border-radius:12px;">아직 메시지가 없습니다. 첫 메시지를 남겨보세요!</div>';
+        return;
+      }
+      listEl.innerHTML = rows.map(renderCard).join('');
+    } catch (e) {
+      console.error(e);
+      listEl.textContent = '메시지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+    }
+  }
+
+  // 3) 카드 렌더 + 삭제 버튼 포함
+    function renderCard(row) {
+    return `
+        <div class="gb--card" data-id="${row.id}">
+        <!-- 제목 + 삭제 버튼 (기존 그대로) -->
+        <div style="display:flex; justify-content:space-between; gap:12px; margin-bottom:6px; align-items:center;">
+            <strong>${escapeHtml(row.name)}</strong>
+            <button class="gb-del" title="삭제" style="border:none; background:#f6f6f6; border:1px solid #ddd; padding:6px 8px; border-radius:8px; cursor:pointer;">🗑</button>
+        </div>
+
+        <!-- 메시지 내용 -->
+        <div style="white-space:pre-wrap; line-height:1.5; margin-bottom:8px;">
+            ${escapeHtml(row.message)}
+        </div>
+
+        <!-- 시간 (맨 아래) -->
+        <div style="text-align:right; color:#555; font-size:12px;">
+            ${row.timestamp ? new Date(row.timestamp).toLocaleString() : ''}
+        </div>
+        </div>
+    `;
+    }
+
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  // 4) 등록 (POST x-www-form-urlencoded)
+  document.getElementById('guestbookForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = nameEl.value.trim();
+    const message = msgEl.value.trim();
+    const password = pwdEl.value.trim();
+    if (!name || !message || !password) return;
+
+    try {
+      const body = new URLSearchParams({ action:'add', name, message, password, phone: '' });
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body
+      });
+      const json = await res.json();
+      if (json.ok) {
+        msgEl.value = ''; pwdEl.value = '';
+        loadComments();
+      } else {
+        alert('등록 실패: ' + (json.error || 'unknown'));
+      }
+    } catch (e) {
+      console.error(e);
+      alert('등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    }
+  });
+
+  // 5) 삭제 (이벤트 위임)
+  listEl.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.gb-del');
+    if (!btn) return;
+
+    const card = btn.closest('.gb--card');
+    const id = card?.dataset?.id;
+    if (!id) return;
+
+    const password = prompt('이 메시지의 비밀번호를 입력하세요:');
+    if (!password) return;
+
+    try {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({ action:'delete', id, password })
+      });
+      const json = await res.json();
+      if (json.ok) {
+        card.remove();
+      } else {
+        alert('삭제 실패: ' + (json.error || 'unknown'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('네트워크 오류로 삭제하지 못했습니다.');
+    }
+  });
+
+  // ⚠️ 혹시 a태그로 GAS_URL을 직접 열고 있었다면, 반드시 막아주세요.
+  // <a href="GAS_URL" ...> 형태는 새 창/현재 창 이동을 유발합니다.
+  // 버튼 + fetch 방식만 사용하세요.
 </script>
+
 
 
 </body>
