@@ -75,6 +75,7 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>창민과 나연의 결혼식에 초대합니다</title>
     <meta content="김창민과 김나연의 결혼식에 와서 축하해주세요~!" name="description"/>
     <meta property="og:image" content="images/main-background.jpeg">
@@ -173,7 +174,59 @@
   html:not([data-loading="1"]) .fade-in.show {
     opacity: 1; transform: none;
   }
+
+  :root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* iOS 주소창 높이 문제 대응 */
+#loadingOverlay{
+  height: 100vh;
+  padding-top: calc(12px + var(--safe-top));
+  padding-bottom: calc(12px + var(--safe-bottom));
+}
+@supports (height: 100dvh){
+  #loadingOverlay{ height: 100dvh; }
+}
+
+/* 로딩 중 아이폰 바운스/튕김 방지 */
+html[data-loading="1"] body{
+  position: fixed; inset: 0; width: 100%;
+  overscroll-behavior: none;
+}
+
+/* 음악 컨트롤이 노치/상단바에 가리지 않도록 */
+.music-top{
+  top: calc(12px + var(--safe-top));
+}
+
+/* 터치 하이라이트/텍스트 드래그 최소화 */
+a, button { -webkit-tap-highlight-color: rgba(0,0,0,.08); }
+* { -webkit-touch-callout: none; }
+
+/* 이미지/아이프레임 반응형 보장 */
+img, iframe { max-width: 100%; height: auto; }
+
+/* 480px 이하(휴대폰) 최적화 */
+@media (max-width: 480px){
+  .ww-couple-name { font-size: 2.2em !important; }
+  .ww-title { font-size: 0.95em !important; letter-spacing: 0; }
+  .music-top{ gap: 8px; padding: 6px 10px; }
+  .volume-slider{ width: 60px; } /* 기본 30px → 모바일에서 조금 넉넉히 */
+  .gift-grid{ gap: 16px; }
+  .gift-card{ flex-basis: 100%; }
+  .map-icon{ width: 52px; height: auto; } /* 터치 타겟 유지 */
+}
+
+/* 360px 이하(아주 작은 기기) */
+@media (max-width: 360px){
+  .volume-slider{ width: 48px; }
+  .music-btn{ width: 32px; height: 32px; font-size: 12px; }
+}
+
 </style>
+
 
 </head>
 
@@ -195,7 +248,7 @@
         <div class="ww-home-page" id="home">
             <div class="ww-wedding-announcement d-flex align-items-center justify-content-start">
                 <div class="container ww-announcement-container">
-                    <p class="ww-couple-name ww-title fade-in" style="font-size:4.0em">Changmin & Nayeon</p>
+                    <p class="ww-couple-name ww-title fade-in" style="font-size:1.0em">Changmin & Nayeon</p>
                     <p class="h2 mt-5 ww-title fade-in" style="font-family: 'Gugi', cursive; font-size:0.9em">
                         | WE ARE GETTING MARRIED |
                     </p>
@@ -1039,20 +1092,23 @@ window.addEventListener('DOMContentLoaded', () => {
 <script>
   // (A) 스크롤 페이드인 옵저버: 로딩 끝난 뒤에만 호출할 것!
   function startFadeInObserver() {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.transitionDelay = (parseInt(e.target.dataset.delay||0,10) || 0) + 'ms';
-          e.target.classList.add('show');
-          io.unobserve(e.target);
-        }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.transitionDelay = (parseInt(e.target.dataset.delay||0,10) || 0) + 'ms';
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -12% 0px' // 모바일에서 화면 들어오기 "조금 전"에 미리 시작
       });
-    }, { threshold: 0.12 });
 
-    document.querySelectorAll('.fade-in').forEach((el, i) => {
-      if (!el.dataset.delay) el.dataset.delay = (i % 8) * 60; // 살짝 스태거
-      io.observe(el);
-    });
+      document.querySelectorAll('.fade-in').forEach((el, i) => {
+        if (!el.dataset.delay) el.dataset.delay = (i % 8) * 60; // 살짝 스태거
+        io.observe(el);
+      });
   }
 
   // (B) 로딩 글자 애니 후: 게이트 해제 → 옵저버 시작 → 오버레이 제거
@@ -1090,6 +1146,8 @@ window.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(() => {
         overlay.style.display = 'none';
         document.body.classList.remove('no-scroll');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('height'); 
         window.scrollTo(0,0);
         sessionStorage.setItem('weddingLoaded','1');
       });
@@ -1112,7 +1170,42 @@ window.addEventListener('DOMContentLoaded', () => {
   <style>#loadingOverlay{display:none} #pageContent{visibility:visible}</style>
 </noscript>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('img').forEach(img => {
+      img.loading = 'lazy';
+      img.decoding = 'async';
+    });
+  });
+</script>
 
+<script>
+(function(){
+  const audio = document.getElementById('player');
+  const overlay = document.getElementById('loadingOverlay');
+
+  function tryPlayOnce(){
+    audio.muted = false;
+    const p = audio.play();
+    if (p && p.catch) p.catch(()=>{});
+    cleanup();
+  }
+  function bind(){
+    const once = { once:true, passive:true };
+    ['pointerdown','touchstart','keydown','wheel'].forEach(t=>{
+      window.addEventListener(t, tryPlayOnce, once);
+      overlay && overlay.addEventListener(t, tryPlayOnce, once);
+    });
+  }
+  function cleanup(){
+    ['pointerdown','touchstart','keydown','wheel'].forEach(t=>{
+      window.removeEventListener(t, tryPlayOnce);
+      overlay && overlay.removeEventListener(t, tryPlayOnce);
+    });
+  }
+  bind();
+})();
+</script>
 
 </body>
 </html>
