@@ -1,77 +1,6 @@
 <!DOCTYPE html>
-<html lang="en-US" data-loading="1">
-
+<html lang="en-US">
 <head>
-  <style>
-  /* 전체를 덮는 로딩 오버레이 */
-  #loadingOverlay{
-    position:fixed; inset:0; z-index:99999;
-    display:flex; align-items:center; justify-content:center;
-    background:#f8fff8;
-    font-family:'Great Vibes', cursive;
-  }
-  .load-text{ font-size:clamp(36px, 6vw, 64px); color:#7DA27D; white-space:pre-line; text-align:center; }
-  .char{ opacity:0; transition:opacity .5s; }
-  .char.show{ opacity:1; }
-
-  /* 본문은 처음엔 숨김 */
-  #pageContent{ visibility:hidden; }
-
-  /* 로딩 중 스크롤 잠금 */
-  body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-  }
-
-  /* 본문은 처음에 보이지 않게 + 페이드인 준비 */
-  #pageContent {
-    opacity: 0;
-    visibility: hidden;          /* 레이아웃은 유지, 화면엔 안 보이게 */
-    transform: translateY(8px);   /* 살짝 아래서 올라오도록 */
-    transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s;
-    /* visibility는 .show가 되기 전까지 숨김 유지, .6s 뒤 보이도록 딜레이 */
-    will-change: opacity, transform;
-  }
-  /* 로딩 끝난 뒤 클래스 추가되면 등장 */
-  #pageContent.show {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition: opacity .6s ease, transform .6s ease, visibility 0s; /* 즉시 보이기 */
-  }
-
-  /* 모션 최소화 설정을 존중 */
-  @media (prefers-reduced-motion: reduce) {
-    #pageContent { transition: none; transform: none; }
-  }
-
-  /* 로딩 오버레이가 확실히 덮도록 */
-  #loadingOverlay {
-    position: fixed; inset: 0; z-index: 99999;
-    display: flex; align-items: center; justify-content: center;
-    background: #f8fff8;
-  }
-</style>
-  
-<style>
-  /* 공통 페이드인 */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 1.7s ease, transform 1.7s ease;
-    will-change: opacity, transform;
-  }
-  .fade-in.show {
-    opacity: 1;
-    transform: none;
-  }
-</style>
-
-
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-
-
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -155,38 +84,9 @@
 
 
     </script>
-
-<style>
-  /* 로딩 중: 스크롤/상호작용 차단 + 본문/페이드 요소 완전 숨김 */
-  html[data-loading="1"] body { overflow: hidden; height: 100vh; overscroll-behavior: none; }
-  html[data-loading="1"] #pageContent {
-    opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px);
-  }
-  html[data-loading="1"] .fade-in { opacity: 0 !important; transform: translateY(8px) !important; }
-  #loadingOverlay { pointer-events: all; touch-action: none; } /* 오버레이가 이벤트 먹도록 */
-
-  /* 로딩 해제 후: 자연스런 페이드인 */
-  html:not([data-loading="1"]) #pageContent {
-    opacity: 1; visibility: visible; transform: none;
-    transition: opacity .6s ease, transform .6s ease;
-  }
-  html:not([data-loading="1"]) .fade-in.show {
-    opacity: 1; transform: none;
-  }
-</style>
-
 </head>
 
-<body id="top" class="no-scroll">
-
-<!-- 로딩 오버레이 -->
-<div id="loadingOverlay" aria-label="Loading">
-  <div class="load-text" id="loadingText"></div>
-</div>
-
-<!-- 본문 래퍼: 기존 index.html의 모든 본문을 이 안에 넣기 -->
-<div id="pageContent">
-
+<body id="top">
 <header></header>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.2"></script>
@@ -195,13 +95,13 @@
         <div class="ww-home-page" id="home">
             <div class="ww-wedding-announcement d-flex align-items-center justify-content-start">
                 <div class="container ww-announcement-container">
-                    <p class="ww-couple-name ww-title fade-in" style="font-size:4.0em">Changmin & Nayeon</p>
-                    <p class="h2 mt-5 ww-title fade-in" style="font-family: 'Gugi', cursive; font-size:0.9em">
+                    <p class="ww-couple-name ww-title" style="font-size:4.0em">Changmin & Nayeon</p>
+                    <p class="h2 mt-5 ww-title" style="font-family: 'Gugi', cursive; font-size:1.0em">
                         | WE ARE GETTING MARRIED |
                     </p>
-                    <p class="h2 mt-5 ww-title fade-in"
+                    <p class="h2 mt-5 ww-title"
                        style="font-family: 'Noto Serif KR', serif; font-size:1.5em; letter-spacing:0px">
-                        <b style="font-size:1.0em;">2025. 09. 20. SAT PM 02:00</b>
+                        <b style="font-size:1.4em;">2025. 09. 20. SAT PM 02:00</b>
                         <br>경기 수원 호텔리츠컨벤션웨딩 7층
                     </p>
                 </div>
@@ -228,10 +128,33 @@
                 </div>
             </nav>
         </div>
+        <!--
+        <div class="ww-section" id="couple">
+            <div class="container">
+                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">신랑 & 신부</h2>
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <div class="mt-3">
+                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em">
+                                이소민</h3>
+                            <img alt="Groom" class="img-fluid" src="images/pic8.jpeg"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mt-3">
+                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em">
+                                최원영</h3>
+                            <img alt="Bride" class="img-fluid" src="images/pic9.jpeg"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
         <div class="ww-section bg-light" id="events">
             <div class="container ww-wedding-event">
-                <h2 class="h1 text-center pb-3 ww-title fade-in" style="font-family: 'Noto Serif KR', serif;">우리의 결혼식에 초대합니다</h2>
-                    <div class="col text-center mb-5 fade-in">
+                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">우리의 결혼식에 초대합니다</h2>
+                    <div class="col text-center mb-5">
                         <h6 style="font-family: 'Noto Serif KR', serif;">
                             <!-- ...existing code... -->
                             <span id="countdown" style="font-weight:bold; color:#b48e5c;"></span>
@@ -268,22 +191,22 @@
                 <div class="row">
                     <div class="col-md-7 col-sm-12">
                         <div class="my-3">
-                            <div class="h4 fade-in">웨딩 본식</div>
+                            <div class="h4">웨딩 본식</div>
                             <ul>
                                 <li>
                                     <i class="text-muted fas fa-map-marker-alt"></i>
-                                    <span class="pl-2 text-muted fade-in">경기 수원시 호텔리츠컨벤션웨딩 7층 빌라드샬롯홀</span>
+                                    <span class="pl-2 text-muted">부산 해운대 우동 센텀사이언스 파크 23층</span>
                                 </li>
                                 <li class="pt-2">
                                     <i class="text-muted far fa-calendar-alt"></i>
-                                    <span class="pl-2 text-muted fade-in">2025년 9월 20일(토), 2:00PM</span>
+                                    <span class="pl-2 text-muted">2019년 5월 18일, 2:30PM</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-5 col-sm-12">
                         <div class="my-3">
-                            <img alt="Wedding Party" class="img-fluid fade-in" src="images/wedding-party.jpg"/>
+                            <img alt="Wedding Party" class="img-fluid" src="images/wedding-party.jpg"/>
                         </div>
                     </div>
                 </div>
@@ -292,43 +215,43 @@
         <div class="ww-section" id="gallery">
             <div class="ww-photo-gallery">
                 <div class="container">
-                    <h2 class="h1 text-center pb-3 ww-title fade-in" style="font-family: 'Noto Serif KR', serif;">포토 갤러리</h2>
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">포토 갤러리</h2>
                     <div class="ww-gallery">
                             <!-- 선택: 전체 보기 버튼 -->
-                            <div class="text-center mt-3 fade-in">
+                            <div class="text-center mt-3">
                                 <a href="gallery.html" class="btn btn-primary">전체 갤러리 보기</a>
                             </div>
                             
                             <!-- 갤러리 카드들 -->
-                        <div class="card-columns mt-4 fade-in"></div>
-                        <div class="card-columns fade-in">
-                            <div class="card fade-in" data-groups="[&quot;party&quot;,&quot;wedding&quot;]">
+                        <div class="card-columns mt-4"></div>
+                        <div class="card-columns">
+                            <div class="card" data-groups="[&quot;party&quot;,&quot;wedding&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
                                     <img alt="Gallery Pic 2" class="img-fluid" src="images/pic2.jpeg"/>
                                 </a>
                             </div>
-                            <div class="card fade-in" data-groups="[&quot;vacation&quot;]">
+                            <div class="card" data-groups="[&quot;vacation&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
                                     <img alt="Gallery Pic 3" class="img-fluid" src="images/pic3.jpeg"/>
                                 </a>
                             </div>
-                            <div class="card fade-in" data-groups="[&quot;party&quot;,&quot;vacation&quot;]">
+                            <div class="card" data-groups="[&quot;party&quot;,&quot;vacation&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
                                     <img alt="Gallery Pic 4" class="img-fluid" src="images/pic4.jpeg"/>
                                 </a>
                             </div>
-                            <div class="card fade-in" data-groups="[&quot;vacation&quot;]">
+                            <div class="card" data-groups="[&quot;vacation&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
                                     <img alt="Gallery Pic 5" class="img-fluid" src="images/pic6.jpeg"/>
                                 </a>
                             </div>
-                            <div class="card fade-in"
+                            <div class="card"
                                  data-groups="[&quot;wedding&quot;,&quot;ceremony&quot;,&quot;party&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
                                     <img alt="Gallery Pic 6" class="img-fluid" src="images/pic7.jpeg"/>
                                 </a>
                             </div>
-                            <div class="card fade-in" data-groups="[&quot;vacation&quot;]">
+                            <div class="card" data-groups="[&quot;vacation&quot;]">
                                 <a data-gallery="ww-gallery" data-toggle="lightbox">
                                     <img alt="Gallery Pic 7" class="img-fluid" src="images/pic5.jpeg"/>
                                 </a>
@@ -339,38 +262,134 @@
                 </div>
             </div>
         </div>
-        <div class="ww-section ww-rsvp-detail fade-in" id="map">
-            <div class="container fade-in">
-                <div class="col text-center fade-in">
-                    <h2 class="h1 text-center pb-3 ww-title fade-in" style="font-family: 'Noto Serif KR', serif;">오시는 길</h2>
+       <!--
+        <div class="ww-section parallax-window  text-white" data-parallax="scroll" data-image-src="images/gift/gift-background.jpg" id="gifts">
+            <div class="ww-gift-section">
+                <div class="container">
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">Gift for our
+                        wedding</h2>
+                    <div class="col text-center mb-5">
+                        <h6 style="font-family: 'Noto Serif KR', serif;">
+                            저희 부부가 앞으로 살아나갈 일상에<br>
+                            오래도록 특별한 기억을 선물하고 싶으신가요?<br>
+                            그렇다면 고민하는 대신 아래 목록을 참고해 주세요.<br>
+                            저희가 필요로 하는 물건들을 정리해 두었습니다.<br>
+                            애정어린 마음으로 보내주신 선물은<br>
+                            가까이 두어 오래도록 아껴 쓰고,<br>
+                            소중하게 간직하겠습니다.
+                            <br><br>
+                            (아래 선물버튼을 눌러 신랑, 신부에게 예약메시지를 보내세요!)
+                        </h6>
+                    </div>
+                    <div class="ww-gift">
+                        <div class="gift-columns">
+                            <div class="gift">
+                                <img alt="와인셀러" class="img-fluid gift-img gift-selected" src="images/gift/wineceller.png"/>
+                                <div class="btn-group gift-btn-group" role="group">
+                                    <button class="btn btn-default gift-btn"
+                                            onclick="window.open('https://smartstore.naver.com/dhk00840/products/4311205513')">
+                                        <i class="fa fa-search"></i></button>
+                                    <button class="btn btn-default gift-btn gift-send" data-name="와인셀러"
+                                            onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                                            class="fa fa-gift"></i></button>
+                                </div>
+                            </div>
+                            <div class="gift">
+                                <img alt="전동클렌저" class="img-fluid gift-img gift-selected"
+                                     src="images/gift/philips_clenser.png"/>
+                                <div class="btn-group gift-btn-group" role="group">
+                                    <button class="btn btn-default gift-btn"
+                                            onclick="window.open('https://www.philips.co.kr/c-p/BSC111_06/visapure-mini-facial-cleanser')">
+                                        <i class="fa fa-search"></i></button>
+                                    <button class="btn btn-default gift-btn gift-send" data-name="전동클렌저"
+                                            onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                                            class="fa fa-gift"></i></button>
+                                </div>
+                            </div>
+                            <div class="gift">
+                                <img alt="드라이기" class="img-fluid gift-img gift-selected" src="images/gift/dyson.png"/>
+                                <div class="btn-group gift-btn-group" role="group">
+                                    <button class="btn btn-default gift-btn"
+                                            onclick="window.open('https://www.kr.dyson.com/products/hair-care/dyson-supersonic-hair-dryer')">
+                                        <i class="fa fa-search"></i></button>
+                                    <button  class="btn btn-default gift-btn gift-send" data-name="드라이기"
+                                             onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                                            class="fa fa-gift"></i></button>
+                                </div>
+                            </div>
+                            <div class="gift">
+                                <img alt="믹서기" class="img-fluid gift-img gift-selected" src="images/gift/blender.png"/>
+                                <div class="btn-group gift-btn-group" role="group">
+                                    <button class="btn btn-default gift-btn"
+                                            onclick="window.open('http://jenniferoom.co.kr/product/detail.html?product_no=85&cate_no=24&display_group=1')">
+                                        <i class="fa fa-search"></i></button>
+                                    <button  class="btn btn-default gift-btn gift-send" data-name="믹서기"
+                                             onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                                            class="fa fa-gift"></i></button>
+                                </div>
+                            </div>
+                            <div class="gift">
+                                <img alt="레고" class="img-fluid gift-img gift-selected" src="images/gift/lego.png"/>
+                                <div class="btn-group gift-btn-group" role="group">
+                                    <button class="btn btn-default gift-btn"
+                                            onclick="window.open('https://shop.lego.com/ko-KR/product/10232')"><i
+                                            class="fa fa-search"></i></button>
+                                    <button class="btn btn-default gift-btn gift-send" data-name="레고"
+                                            
+                                             onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                                            class="fa fa-gift"></i></button>
+                                </div>
+                            </div>
+                            <div class="gift">
+                                <img alt="전기레인지" class="img-fluid gift-img gift-selected" src="images/gift/range.png"/>
+                                <div class="btn-group gift-btn-group" role="group">
+                                    <button class="btn btn-default gift-btn"
+                                            onclick="window.open('https://www.lge.co.kr/lgekor/product/kitchen/electricRange/productDetail.do?cateId=4410&prdId=EPRD.333447')">
+                                        <i class="fa fa-search"></i></button>
+                                    <button class="btn btn-default gift-btn gift-send" data-name="전기레인지"
+                                            
+                                             onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                                            class="fa fa-gift"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+        <div class="ww-section ww-rsvp-detail" id="map">
+            <div class="container">
+                <div class="col text-center">
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">오시는 길</h2>
                     <div>
-                        <h5 style="font-family: 'Noto Serif KR', serif;">호텔리츠컨벤션웨딩 7층 빌라드샬롯홀</h5>
-                        <h6 style="font-family: 'Noto Serif KR', serif;">(경기 수원시 팔달구 권광로134번길 46)</h6>
+                        <h5 style="font-family: 'Noto Serif KR', serif;">센텀사이언스파크웨딩홀 23층 스카이홀</h5>
+                        <h6 style="font-family: 'Noto Serif KR', serif;">(부산 해운대구 센텀중앙로 79)</h6>
                     </div>
                 </div>
 
-                <div class="form-group fade-in">
-                    <div class="col-md-12 fade-in">
-                        <div class="my-3 text-center fade-in">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="my-3 text-center">
                             <a href="https://naver.me/xcnaMlVU">
-                                <img alt="naver-map" class="map-icon fade-in" id="naver-map"
+                                <img alt="naver-map" class="map-icon" id="naver-map"
                                      src="images/map/naver-map.png"/>
                             </a>
                             <a href="https://kko.kakao.com/q0GMsfThN7">
-                                <img alt="kakao-map" class="map-icon fade-in" id="kakao-map"
+                                <img alt="kakao-map" class="map-icon" id="kakao-map"
                                      src="images/map/kakao-map.png"/>
                             </a>
                             <a href="https://maps.app.goo.gl/uWFYAzfjKz6hYebE7">
-                                <img alt="google-map" class="map-icon fade-in" id="google-map"
+                                <img alt="google-map" class="map-icon" id="google-map"
                                      src="images/map/google-map.png"/>
                             </a>
                         </div>
-                        <div class="col text-center fade-in">
+                        <div class="col text-center">
                             <label style="font-family: 'Noto Serif KR', serif; font-size: 15px;">
-                                셔틀버스 - ooooooooooooooooooooooooooooooooooooo
+                                셔틀버스 - 센텀시티역 4번출구앞에서 15분 간격으로 운행
                             </label>
                         </div>
-                        <div class="my-3 fade-in">
+                        <div class="my-3">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3385.2785074011836!2d127.03078603758975!3d37.258632187871406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b436743e39b9f%3A0x2b780a971545dd3!2z7Zi47YWU66as7Lig7Luo67Kk7IWY7Juo65Sp!5e0!3m2!1sko!2skr!4v1754926689254!5m2!1sko!2skr" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
                         </div>
                     </div>
@@ -381,81 +400,81 @@
         </div>
 
         <!-- 마음 전하실 곳 -->
-        <section id="account" class="gift-section fade-in">
-        <h2 class="gift-title fade-in">마음 전하실 곳</h2>
-        <p class="gift-desc fade-in">필요하신 분들을 위해 안내드립니다. 참석이 어려우셔도 축복해주시는 그 마음 깊이 감사드립니다.</p>
+        <section id="account" class="gift-section">
+        <h2 class="gift-title">마음 전하실 곳</h2>
+        <p class="gift-desc">필요하신 분들을 위해 안내드립니다. 참석이 어려우셔도 축복해주시는 그 마음 깊이 감사드립니다.</p>
 
-        <div class="gift-grid fade-in">
+        <div class="gift-grid">
             <!-- 신랑측 -->
-            <article class="gift-card groom fade-in">
-            <button class="gift-head fade-in" aria-expanded="false">
-                <span class="head-left fade-in">
-                <span class="leaf fade-in">❈</span>
-                <span class="head-title fade-in">신랑측</span>
+            <article class="gift-card groom">
+            <button class="gift-head" aria-expanded="false">
+                <span class="head-left">
+                <span class="leaf">❈</span>
+                <span class="head-title">신랑측</span>
                 </span>
-                <span class="chev fade-in"></span>
+                <span class="chev"></span>
             </button>
 
-            <div class="gift-body fade-in">
+            <div class="gift-body">
                 <!-- 항목 -->
-                <div class="gift-row fade-in">
-                <div class="gift-info fade-in">
-                    <div class="who fade-in"><b>신랑 김창민</b></div>
-                    <div class="bank fade-in">토스뱅크 <span class="acct">1000-2198-4655</span></div>
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who"><b>신랑 김정훈</b></div>
+                    <div class="bank">토스뱅크 <span class="acct">1000-123-456789</span></div>
                 </div>
-                <div class="gift-actions fade-in">
-                    <a class="btn pay fade-in" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
-                    <button class="btn ghost fade-in" data-copy="1000-123-456789">계좌번호 복사</button>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="1000-123-456789">계좌번호 복사</button>
                 </div>
                 </div>
 
-                <div class="divider fade-in"></div>
+                <div class="divider"></div>
 
-                <div class="gift-row fade-in">
-                <div class="gift-info fade-in">
-                    <div class="who fade-in">혼주 <b>박미숙</b></div>
-                    <div class="bank fade-in">농협 <span class="acct">302-9876-5432-10</span></div>
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who">혼주 <b>박미숙</b></div>
+                    <div class="bank">농협 <span class="acct">302-9876-5432-10</span></div>
                 </div>
-                <div class="gift-actions fade-in">
-                    <a class="btn pay fade-in" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
-                    <button class="btn ghost fade-in" data-copy="302-9876-5432-10">계좌번호 복사</button>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="302-9876-5432-10">계좌번호 복사</button>
                 </div>
                 </div>
             </div>
             </article>
 
             <!-- 신부측 -->
-            <article class="gift-card bride fade-in">
-            <button class="gift-head fade-in" aria-expanded="false">
-                <span class="head-left fade-in">
-                <span class="leaf fade-in">❈</span>
-                <span class="head-title fade-in">신부측</span>
+            <article class="gift-card bride">
+            <button class="gift-head" aria-expanded="false">
+                <span class="head-left">
+                <span class="leaf">❈</span>
+                <span class="head-title">신부측</span>
                 </span>
-                <span class="chev fade-in"></span>
+                <span class="chev"></span>
             </button>
 
-            <div class="gift-body fade-in">
-                <div class="gift-row fade-in">
-                <div class="gift-info fade-in">
-                    <div class="who fade-in"><b>신부 김수연</b></div>
-                    <div class="bank fade-in">국민은행 <span class="acct fade-in">123-45-678910</span></div>
+            <div class="gift-body">
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who"><b>신부 김수연</b></div>
+                    <div class="bank">국민은행 <span class="acct">123-45-678910</span></div>
                 </div>
-                <div class="gift-actions fade-in">
-                    <a class="btn pay fade-in" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
-                    <button class="btn ghost fade-in" data-copy="123-45-678910">계좌번호 복사</button>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="123-45-678910">계좌번호 복사</button>
                 </div>
                 </div>
 
-                <div class="divider fade-in"></div>
+                <div class="divider"></div>
 
-                <div class="gift-row fade-in">
-                <div class="gift-info fade-in">
-                    <div class="who fade-in">혼주 <b>이정자</b></div>
-                    <div class="bank fade-in">신한은행 <span class="acct fade-in">110-234-567890</span></div>
+                <div class="gift-row">
+                <div class="gift-info">
+                    <div class="who">혼주 <b>이정자</b></div>
+                    <div class="bank">신한은행 <span class="acct">110-234-567890</span></div>
                 </div>
-                <div class="gift-actions fade-in">
-                    <a class="btn pay fade-in" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
-                    <button class="btn ghost fade-in" data-copy="110-234-567890">계좌번호 복사</button>
+                <div class="gift-actions">
+                    <a class="btn pay" href="https://qr.kakaopay.com/예시" target="_blank" rel="noopener">카카오페이 송금</a>
+                    <button class="btn ghost" data-copy="110-234-567890">계좌번호 복사</button>
                 </div>
                 </div>
             </div>
@@ -550,18 +569,18 @@
 
 
 
-        <div class="ww-section bg-light fade-in" id="comment">
-            <div class="ww-photo-gallery fade-in">
-                <div class="container fade-in">
-                    <div class="col text-center fade-in">
-                        <h2 class="h1 text-center pb-3 ww-title fade-in" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
+        <div class="ww-section bg-light" id="comment">
+            <div class="ww-photo-gallery">
+                <div class="container">
+                    <div class="col text-center">
+                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
                         <!--div id="comments"></div-->
                         <br>
-                        <div class="row fade-in">
-                            <div class="col text-center fade-in">
+                        <div class="row">
+                            <div class="col text-center">
                                 <!-- a class="btn btn-primary btn-submit" href="./guestbook.html"-->
 <!-- 토글 버튼 -->
-<button id="toggleGuestbook" class="btn btn-primary fade-in">메시지 보내기 버튼</button>
+<button id="toggleGuestbook" class="btn btn-primary">메시지 보내기 버튼</button>
 <style>
 #toggleGuestbook {
   display: none;
@@ -572,7 +591,7 @@
   <!-- 입력 폼 -->
   <form id="guestbookForm" style="padding:12px 18px; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start; border:1px solid #eee; border-radius:12px;">
     <input id="gbName" name="name" required placeholder="이름" style="padding:10px; border:1px solid #ddd; border-radius:8px;">
-    <button class="btn fade-in" style="padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#f6f6f6;">등록</button>
+    <button class="btn" style="padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#f6f6f6;">등록</button>
 
     <textarea id="gbMsg" name="message" required placeholder="메시지를 입력하세요" rows="3" style="grid-column:1 / -1; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
 
@@ -694,15 +713,15 @@ background:
 </style>
 
 <!-- 공유/복사 영역 -->
-<div class="share-section fade-in">
+<div class="share-section">
   <!-- 카카오톡 공유 -->
-  <a href="https://sharer.kakao.com/talk/friends/picker/link?url=https://mylove-wedding.info" target="_blank" class="share-btn kakao fade-in">
-    <span class="icon fade-in">💬</span>
+  <a href="https://sharer.kakao.com/talk/friends/picker/link?url=https://mylove-wedding.info" target="_blank" class="share-btn kakao">
+    <span class="icon">💬</span>
     카카오톡 공유하기
   </a>
   <!-- 링크 복사 -->
-  <button class="share-btn copy fade-in" data-link="https://mylove-wedding.info">
-    <span class="icon fade-in">🔗</span>
+  <button class="share-btn copy" data-link="https://mylove-wedding.info">
+    <span class="icon">🔗</span>
     링크 복사하기
   </button>
 </div>
@@ -793,11 +812,46 @@ document.querySelector('.copy').addEventListener('click', function() {
     </div>
 </div>
 </div>
-
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="giftMailModal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">선물하기 - <span id="gift-name"></span></h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">보내는 분 성함</span>
+                    </div>
+                    <input aria-describedby="basic-addon3" class="form-control" id="sender-name" type="text">
+                </div>
+                <div class="input-group">
+                    <textarea aria-label="With textarea" class="form-control" id="sender-message"
+                              placeholder="신랑, 신부에게 선물 예약과 함께 보낼 메시지를 입력해주세요. 이 메시지는 신랑, 신부에게 발송됩니다." rows=4></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="reserveGiftButton" type="button">예약</button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="js/aos.js"></script>
+<script src="js/parallax.min.js"></script>
+<script src="js/ekko-lightbox.min.js"></script>
+<script src="scripts/main.js"></script>
 
 <style>
   .music-top {
-    position: fixed; top: 50px; left: 20px; z-index: 9999;
+    position: fixed; top: 20px; left: 20px; z-index: 9999;
     background: rgba(255,255,255,0.85);
     border-radius: 30px; padding: 8px 14px;
     box-shadow: 0 2px 8px rgba(0,0,0,.1);
@@ -856,8 +910,8 @@ document.querySelector('.copy').addEventListener('click', function() {
   }
 </style>
 
-<div class="music-top fade-in" role="region" aria-label="음악 컨트롤">
-  <button id="playPause" class="music-btn fade-in" aria-label="재생">▶</button>
+<div class="music-top" role="region" aria-label="음악 컨트롤">
+  <button id="playPause" class="music-btn" aria-label="재생">▶</button>
 
   <!-- 파동 애니메이션 (재생 중에만 on 클래스 부여) -->
   <div id="wave" class="wave" aria-hidden="true">
@@ -868,7 +922,7 @@ document.querySelector('.copy').addEventListener('click', function() {
     <span class="bar"></span>
   </div>
 
-  <input id="volume" class="volume-slider fade-in" type="range" min="0" max="1" step="0.01" value="1" aria-label="볼륨">
+  <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="1" aria-label="볼륨">
 </div>
 
 <!-- 기본 컨트롤 없이 숨겨둔 오디오 -->
@@ -904,10 +958,24 @@ document.querySelector('.copy').addEventListener('click', function() {
   // 볼륨
   vol.addEventListener('input', () => { audio.volume = vol.value; });
 
+  // (선택) 자동 반복
+  // audio.loop = true;
 
+  // iOS 등 자동재생 정책 때문에 첫 사용자 상호작용 전에 play()가 막힐 수 있어요.
+  // 위처럼 버튼 클릭 시 play() 호출하도록 구성하면 안전합니다.
 </script>
 
 
+
+<!-- ...existing code... -->
+<!-- ...기존 .bottom_left div는 삭제 또는 주석처리 해주세요...
+<div class="bottom_left">
+    <audio id="player" src="mus.mp3" autoplay muted></audio>
+    <div>
+        <i class="fa fa-music fa-2x" onclick="document.getElementById('player').muted=false;document.getElementById('player').play()"></i>
+    </div>
+</div>
+-->
 <script>
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbxmq1oirgfr1hTm6BzppbGkJi8probMGkCSlJ37Aek6ihjpZn2farghFMysLLkQca5I/exec';
 
@@ -1032,85 +1100,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ⚠️ 혹시 a태그로 GAS_URL을 직접 열고 있었다면, 반드시 막아주세요.
+  // <a href="GAS_URL" ...> 형태는 새 창/현재 창 이동을 유발합니다.
+  // 버튼 + fetch 방식만 사용하세요.
 </script>
-
-</div>
-
-<script>
-  // (A) 스크롤 페이드인 옵저버: 로딩 끝난 뒤에만 호출할 것!
-  function startFadeInObserver() {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.transitionDelay = (parseInt(e.target.dataset.delay||0,10) || 0) + 'ms';
-          e.target.classList.add('show');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.fade-in').forEach((el, i) => {
-      if (!el.dataset.delay) el.dataset.delay = (i % 8) * 60; // 살짝 스태거
-      io.observe(el);
-    });
-  }
-
-  // (B) 로딩 글자 애니 후: 게이트 해제 → 옵저버 시작 → 오버레이 제거
-  (function(){
-    const MESSAGE = "Happy\nWedding\nDay";
-    const STEP_MS = 180;
-    const EXTRA_WAIT_MS = 800;
-
-    const overlay = document.getElementById('loadingOverlay');
-    const textBox = document.getElementById('loadingText');
-    const page    = document.getElementById('pageContent');
-
-    // 글자 애니메이션
-    MESSAGE.split('').forEach((ch, i) => {
-      const span = document.createElement('span');
-      span.className = 'char';
-      if (ch === '\n') span.innerHTML = '<br>'; else span.textContent = ch;
-      textBox.appendChild(span);
-      setTimeout(() => span.classList.add('show'), i * STEP_MS);
-    });
-
-    const total = MESSAGE.length * STEP_MS + EXTRA_WAIT_MS;
-
-    setTimeout(() => {
-      // 1) 본문 페이드인 준비(페이지 래퍼가 있다면 그대로 유지)
-      page.classList.add('show');
-
-      // 2) 게이트 해제 ⇒ 이제 .fade-in.show가 트랜지션을 수행
-      document.documentElement.removeAttribute('data-loading');
-
-      // 3) 스크롤 페이드인 옵저버 시작
-      startFadeInObserver();
-
-      // 4) 오버레이 제거 + 스크롤 해제 + 맨 위로
-      requestAnimationFrame(() => {
-        overlay.style.display = 'none';
-        document.body.classList.remove('no-scroll');
-        window.scrollTo(0,0);
-        sessionStorage.setItem('weddingLoaded','1');
-      });
-    }, total);
-  })();
-</script>
-
-
-<noscript>
-  <style>
-    #loadingOverlay{ display:none; }
-    #pageContent{ opacity:1; visibility:visible; transform:none; }
-    body{ overflow:auto; height:auto; }
-  </style>
-</noscript>
-
-  
-<noscript>
-  <!-- JS 꺼져 있으면 본문 보이게 -->
-  <style>#loadingOverlay{display:none} #pageContent{visibility:visible}</style>
-</noscript>
 
 
 
