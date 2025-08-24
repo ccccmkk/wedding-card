@@ -579,7 +579,7 @@ pre code {
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
-    margin-right: auto;
+    margin-right: `to;
     margin-left: auto;
 }
 
@@ -10035,7 +10035,7 @@ body {
 
 /* Common Style */
 .ww-title {
-    font-family: "Great Vibes", cursive;
+    font-family: 'Noto Serif KR', serif cursive;
 }
 
 .ww-section {
