@@ -4,6 +4,12 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+ 
+
+ html, body {
+    background-color: #f8fff8 !important;
+  }
+
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -24,7 +30,7 @@
     --info: #17a2b8;
     --warning: #ffc107;
     --danger: #dc3545;
-    --light: #f8f9fa;
+    --light: #f8fff8;
     --dark: #343a40;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
@@ -440,7 +446,7 @@ small,
 mark,
 .mark {
     padding: 0.2em;
-    background-color: #fcf8e3;
+    background-color: #c7be91;
 }
 
 .list-unstyled {
@@ -1900,16 +1906,16 @@ pre code {
 .table-primary,
 .table-primary > th,
 .table-primary > td {
-    background-color: #fcded9;
+    background-color: #ffffff;
 }
 
 .table-hover .table-primary:hover {
-    background-color: #fac9c1;
+    background-color: #ffffff;
 }
 
 .table-hover .table-primary:hover > td,
 .table-hover .table-primary:hover > th {
-    background-color: #fac9c1;
+    background-color: #ffffff;
 }
 
 .table-secondary,
@@ -1979,7 +1985,7 @@ pre code {
 }
 
 .table-hover .table-danger:hover {
-    background-color: #f1b0b7;
+    background-color: #ffffff;
 }
 
 .table-hover .table-danger:hover > td,
@@ -2142,7 +2148,7 @@ pre code {
     font-size: 1rem;
     line-height: 1.5;
     color: #495057;
-    background-color: #fff;
+    background-color: transparent;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
@@ -2187,7 +2193,7 @@ pre code {
 }
 
 .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: transparent;
     opacity: 1;
 }
 
@@ -2197,7 +2203,7 @@ select.form-control:not([size]):not([multiple]) {
 
 select.form-control:focus::-ms-value {
     color: #495057;
-    background-color: #fff;
+    background-color: transparent;
 }
 
 .form-control-file,
@@ -2917,8 +2923,8 @@ fieldset:disabled a.btn {
 
 .btn-light {
     color: #212529;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
+    background-color: #f8fff8;
+    border-color: #f8fff8;
 }
 
 .btn-light:hover {
@@ -2934,8 +2940,8 @@ fieldset:disabled a.btn {
 
 .btn-light.disabled, .btn-light:disabled {
     color: #212529;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
+    background-color: #f8fff8;
+    border-color: #f8fff8;
 }
 
 .btn-light:not(:disabled):not(.disabled):active, .btn-light:not(:disabled):not(.disabled).active,
@@ -3204,16 +3210,16 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-light {
-    color: #f8f9fa;
+    color: #f8fff8;
     background-color: transparent;
     background-image: none;
-    border-color: #f8f9fa;
+    border-color: #f8fff8;
 }
 
 .btn-outline-light:hover {
     color: #212529;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
+    background-color: #f8fff8;
+    border-color: #f8fff8;
 }
 
 .btn-outline-light:focus, .btn-outline-light.focus {
@@ -3222,15 +3228,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-light.disabled, .btn-outline-light:disabled {
-    color: #f8f9fa;
+    color: #f8fff8;
     background-color: transparent;
 }
 
 .btn-outline-light:not(:disabled):not(.disabled):active, .btn-outline-light:not(:disabled):not(.disabled).active,
 .show > .btn-outline-light.dropdown-toggle {
     color: #212529;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
+    background-color: #f8fff8;
+    border-color: #f8fff8;
 }
 
 .btn-outline-light:not(:disabled):not(.disabled):active:focus, .btn-outline-light:not(:disabled):not(.disabled).active:focus,
@@ -3512,7 +3518,7 @@ tbody.collapse.show {
 .dropdown-item:hover, .dropdown-item:focus {
     color: #16181b;
     text-decoration: none;
-    background-color: #f8f9fa;
+    background-color: #f8fff8;
 }
 
 .dropdown-item.active, .dropdown-item:active {
@@ -4146,7 +4152,7 @@ tbody.collapse.show {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #f58a77;
+    background-color: transparent;
 }
 
 .nav-fill .nav-item {
@@ -4186,7 +4192,7 @@ tbody.collapse.show {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0rem 1rem;
 }
 
 .navbar > .container,
@@ -5234,7 +5240,7 @@ tbody.collapse.show {
 
 .badge-light {
     color: #212529;
-    background-color: #f8f9fa;
+    background-color: #f8fff8;
 }
 
 .badge-light[href]:hover, .badge-light[href]:focus {
@@ -5506,7 +5512,7 @@ tbody.collapse.show {
 .list-group-item-action:hover, .list-group-item-action:focus {
     color: #495057;
     text-decoration: none;
-    background-color: #f8f9fa;
+    background-color: #f8fff8;
 }
 
 .list-group-item-action:active {
@@ -6471,7 +6477,7 @@ button.bg-danger:focus {
 }
 
 .bg-light {
-    background-color: #f8f9fa !important;
+    background-color: #f8fff8 !important;
 }
 
 a.bg-light:hover, a.bg-light:focus,
@@ -6563,7 +6569,7 @@ button.bg-dark:focus {
 }
 
 .border-light {
-    border-color: #f8f9fa !important;
+    border-color: #f8fff8 !important;
 }
 
 .border-dark {
@@ -9632,7 +9638,7 @@ a.text-danger:hover, a.text-danger:focus {
 }
 
 .text-light {
-    color: #f8f9fa !important;
+    color: #f8fff8 !important;
 }
 
 a.text-light:hover, a.text-light:focus {
@@ -9756,9 +9762,8 @@ body {
 
 /* Home Page Style */
 .ww-home-page {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../images/main-background.jpeg") no-repeat center center;
-    background-size: cover;
-    background-position: 50%;
+    background: url("../images/main-background.jpeg") no-repeat center center;
+    background-size: contain;
     height: 100vh;
     min-height: 480px;
 }
@@ -9804,7 +9809,7 @@ body {
 
 .ww-home-page:before {
     content: "";
-    background-color: rgba(245, 138, 119, 0.2);
+    background-color: rgba(0, 0, 0, 0);
     width: 100%;
     height: 100%;
     height: 100vh;
@@ -9816,7 +9821,7 @@ body {
 
 /* Nav Bar Style */
 .ww-nav-bar .heart {
-    fill: #f26147;
+    fill: #ffffff !important;
     position: relative;
     top: 2px;
     width: 40px;
@@ -9966,9 +9971,9 @@ body {
 }
 
 .ww-rsvp-detail .ww-rsvp-form .form-control {
-    background-color: rgba(222, 222, 222, 0.2);
+    background-color: rgba(0, 0, 0, 0);
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0);
 }
 
 .ww-rsvp-detail .ww-rsvp-form .form-control::-webkit-input-placeholder {
@@ -9988,12 +9993,12 @@ body {
 }
 
 .ww-rsvp-detail .ww-rsvp-form select.form-control option {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0);
     color: #fff;
 }
 
 .ww-rsvp-detail .ww-rsvp-form .btn-submit {
-    background-color: rgba(245, 138, 119, 0.8);
+    background-color: rgba(0, 0, 0, 0);
     padding: 0.45rem 1.5rem;
     border: 0;
 }
@@ -10059,3 +10064,189 @@ body {
     left: 0;
     margin: 0px 15px 15px 15px;
 }
+
+  <style>
+  /* 전체를 덮는 로딩 오버레이 */
+  #loadingOverlay{
+    position:fixed; inset:0; z-index:99999;
+    display:flex; align-items:center; justify-content:center;
+    background:#f8fff8;
+    font-family:'Great Vibes', cursive;
+  }
+  .load-text{ font-size:clamp(36px, 6vw, 64px); color:#7DA27D; white-space:pre-line; text-align:center; }
+  .char{ opacity:0; transition:opacity .5s; }
+  .char.show{ opacity:1; }
+
+  /* 본문은 처음엔 숨김 */
+  #pageContent{ visibility:hidden; }
+
+
+  /* 로딩 중 스크롤 잠금 */
+  body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* 본문은 처음에 보이지 않게 + 페이드인 준비 */
+  #pageContent {
+    opacity: 0;
+    visibility: hidden;          /* 레이아웃은 유지, 화면엔 안 보이게 */
+    transform: translateY(8px);   /* 살짝 아래서 올라오도록 */
+    transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s;
+    /* visibility는 .show가 되기 전까지 숨김 유지, .6s 뒤 보이도록 딜레이 */
+    will-change: opacity, transform;
+  }
+  /* 로딩 끝난 뒤 클래스 추가되면 등장 */
+  #pageContent.show {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity .6s ease, transform .6s ease, visibility 0s; /* 즉시 보이기 */
+  }
+
+  /* 모션 최소화 설정을 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    #pageContent { transition: none; transform: none; }
+  }
+
+  /* 로딩 오버레이가 확실히 덮도록 */
+  #loadingOverlay {
+    position: fixed; inset: 0; z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    background: #f8fff8;
+  }
+</style>
+  
+<style>
+  @media (max-width: 480px){
+  #guestbookForm{ grid-template-columns: 1fr; }
+  }
+  /* 한 번만 선언해두면 잔여 1~2px 넘침 방지에 좋아요 */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+
+/* 폼의 1열을 '줄어들 수 있는' 열로 */
+#guestbookForm{
+  grid-template-columns: minmax(0,1fr) auto;
+  max-width: 100%;
+  }
+
+  #guestbookList{
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    max-width: 100%;
+  }
+
+/* 그리드 자식이 줄어들도록 강제 (KaKao WebView 중요) */
+#guestbookForm > * { min-width: 0; }
+#guestbookForm input,
+#guestbookForm textarea,
+#guestbookForm button { max-width: 100%; }
+
+</style>
+
+<style>
+  /* 공통 페이드인 */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 1.7s ease, transform 1.7s ease;
+    will-change: opacity, transform;
+  }
+  .fade-in.show {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+
+<style>
+  /* 로딩 중: 스크롤/상호작용 차단 + 본문/페이드 요소 완전 숨김 */
+  html[data-loading="1"] body { overflow: hidden; height: 100vh; overscroll-behavior: none; }
+  html[data-loading="1"] #pageContent {
+    opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px);
+  }
+  html[data-loading="1"] .fade-in { opacity: 0 !important; transform: translateY(8px) !important; }
+  #loadingOverlay { pointer-events: all; touch-action: none; } /* 오버레이가 이벤트 먹도록 */
+
+  /* 로딩 해제 후: 자연스런 페이드인 */
+  html:not([data-loading="1"]) #pageContent {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  html:not([data-loading="1"]) .fade-in.show {
+    opacity: 1; transform: none;
+  }
+
+  :root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* iOS 주소창 높이 문제 대응 */
+#loadingOverlay{
+  height: 100vh;
+  padding-top: calc(12px + var(--safe-top));
+  padding-bottom: calc(12px + var(--safe-bottom));
+}
+@supports (height: 100dvh){
+  #loadingOverlay{ height: 100dvh; }
+}
+
+/* 로딩 중 아이폰 바운스/튕김 방지 */
+html[data-loading="1"] body{
+  position: fixed; inset: 0; width: 100%;
+  overscroll-behavior: none;
+}
+
+/* 음악 컨트롤이 노치/상단바에 가리지 않도록 */
+.music-top{
+  top: calc(12px + var(--safe-top));
+}
+
+/* 터치 하이라이트/텍스트 드래그 최소화 */
+a, button { -webkit-tap-highlight-color: rgba(0,0,0,.08); }
+* { -webkit-touch-callout: none; }
+
+/* 이미지/아이프레임 반응형 보장 */
+img, iframe { max-width: 100%; height: auto; }
+
+/* 480px 이하(휴대폰) 최적화 */
+@media (max-width: 480px){
+  .ww-couple-name { font-size: 2.2em !important; }
+  .ww-title { font-size: 0.95em !important; letter-spacing: 0; }
+  .music-top{ gap: 8px; padding: 6px 10px; }
+  .volume-slider{ width: 60px; } /* 기본 30px → 모바일에서 조금 넉넉히 */
+  .gift-grid{ gap: 16px; }
+  .gift-card{ flex-basis: 100%; }
+  .map-icon{ width: 52px; height: auto; } /* 터치 타겟 유지 */
+}
+
+/* 360px 이하(아주 작은 기기) */
+@media (max-width: 360px){
+  .volume-slider{ width: 48px; }
+  .music-btn{ width: 32px; height: 32px; font-size: 12px; }
+}
+
+.ww-wedding-announcement {
+  position: relative; /* 기준 부모 */
+}
+
+.hero-sub {
+  position: absolute;
+  top: 10%; /* 사진 상단에서 5% (원하면 3%~10%로 조절) */
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;   /* 문구 길이만큼만 박스 차지 */
+  text-align: center;
+  color: #fff;
+  margin: 0;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.ww-announcement-container {
+  margin-top: 10em;   /* 글자 크기 기준 3줄 정도 아래로 */
+}
+
+
+</style>
