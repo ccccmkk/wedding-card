@@ -3287,7 +3287,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-link:hover {
-    color: #f04d30;
+    color: #f8fff8;
     text-decoration: underline;
     background-color: transparent;
     border-color: transparent;
@@ -9903,7 +9903,15 @@ body {
 .ww-photo-gallery .ww-gallery {
     background-color: #f8fff8 !important;
     min-height: 500px;
+    
 }
+
+.ww-gallery img {
+    width: 100%;
+    aspect-ratio: 1 / 1;   /* 정사각형 비율 유지 */
+    object-fit: cover;     /* 넘치면 잘라내고 꽉 채움 */
+    border-radius: 8px;    /* 선택: 모서리 둥글게 */
+  }
 
 .ww-gift-section .ww-gift {
     min-height: 100px;
@@ -9923,8 +9931,10 @@ body {
 
 @media (max-width: 992px) {
     .ww-photo-gallery .card-columns {
-        -webkit-column-count: 2;
-        column-count: 2;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(160px, 1fr)); /* 최소 160px */
+        gap: 12px; /* 카드 간격 */
+      }
     }
 }
 
@@ -10090,3 +10100,111 @@ body {
   }
   .sound-btn.muted img { opacity: .4; } /* 음소거일 땐 흐리게 */
   
+/* 갤러리 사진에는 그대로 .gallery 스타일 적용 */
+.gallery img { width: 100%; height: auto; }
+
+/* 아이콘 이미지는 강제 크기 고정 */
+.icon-img {
+  width: 18px !important;
+  height: 18px !important;
+  vertical-align: middle;
+  border-radius: 0px !important;
+}
+
+/* 아이콘 크기 고정 */
+.gallery-btn .icon-img {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+  }
+  
+  /* 버튼 스타일 */
+  .gallery-btn {
+    display: inline-flex;          /* 아이콘 + 텍스트 가로 정렬 */
+    align-items: center;          /* 세로 중앙 정렬 */
+    gap: 8px;                     /* 아이콘과 텍스트 간격 */
+    background: #fff;             /* 배경 */
+    color: #e74c3c;               /* 텍스트 색 (예: 빨강) */
+    border: 1px solid #ddd;       /* 테두리 */
+    padding: 10px 16px;           /* 안쪽 여백 */
+    font-weight: bold;
+    text-decoration: none;        /* 밑줄 제거 */
+  }
+
+
+  /* 상단 텍스트 */
+  .calendar-wrap{max-width:520px;margin:0 auto;padding:8px 16px 24px; background-color: #f8fff8;;}
+  .cal-kicker{letter-spacing:.25em;color:#7aa27a;font-weight:700;text-align:center;margin-bottom:8px}
+  .cal-date{letter-spacing:.15em;font-size:22px;text-align:center;margin-bottom:8px;color:#2b2b2b}
+  
+  /* 달력 그리드 */
+  .cal{
+    border-top:1px solid #eee; border-bottom:1px solid #eee;
+    padding:14px 12px; margin:8px 0 20px;
+    display:grid; grid-template-columns: repeat(7,1fr); gap:10px 6px;
+    align-items:center; justify-items:center;
+    font-family: inherit; background-color: #f8fff8;
+  }
+  .cal .dow{font-weight:700;color:#999}
+  .cal .dow.su{color:#d9534f}
+  .cal .day{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#333}
+  .cal .day.su{color:#d9534f}
+  .cal .day.muted{opacity:.35}
+  .cal .day.dday{
+    background:#0ea06f; color:#fff; font-weight:700;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  
+  /* 위치 버튼 */
+  .cal-mapbtn{
+    display:flex;gap:8px;align-items:center;justify-content:center;
+    background:#f8fff8;border:1px solid #f8fff8;border-radius:12px;
+    padding:14px 16px;text-decoration:none;color:#333
+  }
+  .cal-mapbtn:hover{background:#eee}
+  
+  /* 모바일 살짝 여백 조정 */
+  @media (max-width:420px){
+    .cal{gap:8px 4px}
+    .cal-date{font-size:20px}
+    .cal-place{font-size:16px}
+  }
+
+  .brown-divider {
+    border: none;
+    border-top: 2px solid #8B5E3C;
+    width: 80%;
+    margin: 30px auto;
+    position: relative;
+  }
+  .brown-divider::after {
+    content: "❖"; /* 포인트 심볼 */
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f8fff8; /* 배경색 맞춰서 */
+    padding: 0 12px;
+    font-size: 18px;
+    color: #8B5E3C;
+  }
+
+
+  .green-divider {
+    border: none;
+    border-top: 2px solid #0ea06f;
+    width: 80%;
+    margin: 30px auto;
+    position: relative;
+  }
+  .green-divider::after {
+    content: "❖"; /* 포인트 심볼 */
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f8fff8; /* 배경색 맞춰서 */
+    padding: 0 12px;
+    font-size: 18px;
+    color: #0ea06f;
+  }
