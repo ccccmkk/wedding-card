@@ -2,95 +2,276 @@
 <html lang="en-US" data-loading="1">
 
 <head>
-  </head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preload" href="/fonts/NotoSerifKR-Regular.woff2?v=5" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/NotoSerifKR-Bold.woff2?v=5" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts/stylesheet.css?v=5">
+  
+  <style>
+  /* 전체를 덮는 로딩 오버레이 */
+  #loadingOverlay{
+    position:fixed; inset:0; z-index:99999;
+    display:flex; align-items:center; justify-content:center;
+    background:#f8fff8;
+    font-family:'Great Vibes', cursive;
+  }
+  .load-text{ font-size:clamp(36px, 6vw, 64px); color:#7DA27D; white-space:pre-line; text-align:center; }
+  .char{ opacity:0; transition:opacity .5s; }
+  .char.show{ opacity:1; }
 
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-
-
-  <meta charset="UTF-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>창민과 나연의 결혼식에 초대합니다</title>
-  <meta content="김창민과 김나연의 결혼식에 와서 축하해주세요~!" name="description"/>
-  <meta property="og:image" content="images/main-background.jpeg">
-  <meta property="fb:app_id" content="781066922265598" />
-  <meta property="fb:admins" content="Choi.Anderson"/>
-  <link href="images/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
-  <link href="images/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
-  <link href="images/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
-  <link href="https://fonts.googleapis.com/css?family=Dosis:400,500" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
-  <link href="css/ekko-lightbox.css" rel="stylesheet">
-  <link href="styles/main.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Gamja+Flower|Gugi|Noto+Serif+KR|Stylish|Sunflower:300"
-        rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-2.2.1.js"></script>
+  /* 본문은 처음엔 숨김 */
+  #pageContent{ visibility:hidden; }
 
 
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js" type="text/javascript"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.js" type="text/javascript"></script>
-  <script type="text/javascript">
-      function sendMail() {
+  /* 로딩 중 스크롤 잠금 */
+  body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
 
-          (function () {
-              emailjs.init("user_yjLL5xG0A3kkOCH5BGIDh");
-              emailjs.send("wedding-mail", "gift_send", {
-                  name: $("#sender-name").value,
-                  gift: $("#gift-name").text(),
-                  message: $("#sender-message").value
-              }).then(function (response) {
-                  console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
-              }, function (err) {
-                  console.log("FAILED. error=", err);
-              });
-          })();
-      }
+  /* 본문은 처음에 보이지 않게 + 페이드인 준비 */
+  #pageContent {
+    opacity: 0;
+    visibility: hidden;          /* 레이아웃은 유지, 화면엔 안 보이게 */
+    transform: translateY(8px);   /* 살짝 아래서 올라오도록 */
+    transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s;
+    /* visibility는 .show가 되기 전까지 숨김 유지, .6s 뒤 보이도록 딜레이 */
+    will-change: opacity, transform;
+  }
+  /* 로딩 끝난 뒤 클래스 추가되면 등장 */
+  #pageContent.show {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity .6s ease, transform .6s ease, visibility 0s; /* 즉시 보이기 */
+  }
 
-      function findGetParameter(parameterName) {
-          var result = null,
-              tmp = [];
-          location.search
-              .substr(1)
-              .split("&")
-              .forEach(function (item) {
-                tmp = item.split("=");
-                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-              });
-          return result;
-      }
+  /* 모션 최소화 설정을 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    #pageContent { transition: none; transform: none; }
+  }
 
-      $(document).ready(function () {
+  /* 로딩 오버레이가 확실히 덮도록 */
+  #loadingOverlay {
+    position: fixed; inset: 0; z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    background: #f8fff8;
+  }
 
-          function getText(){
-              var result = null;
-              $.ajax( { url: "https://raw.githubusercontent.com/AndersonChoi/wedding-card/master/README.md",
-                      type: 'get',
-                      dataType: 'html',
-                      async: false,
-                      success: function(data) { result = data; }
-                  }
-              );
-              FileReady = true;
-              return result;
-          }
-          var markdown_source = getText();
-          var comment_contents = markdown_source.split("축하의 말")[1];
+  body {
+    font-family: 'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
+  }
+  
+</style>
+  
+<style>
+  @media (max-width: 480px){
+  #guestbookForm{ grid-template-columns: 1fr; }
+  }
+  /* 한 번만 선언해두면 잔여 1~2px 넘침 방지에 좋아요 */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
 
-          var md = new Remarkable();
-          $("#comments").append(md.render(comment_contents));
+/* 폼의 1열을 '줄어들 수 있는' 열로 */
+#guestbookForm{
+  grid-template-columns: minmax(0,1fr) auto;
+  max-width: 100%;
+  }
 
-          
-          if(findGetParameter('gift')=='false'){
-              $('#gifts').hide();
-          }
-      });
+  #guestbookList{
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    max-width: 100%;
+  }
+
+/* 그리드 자식이 줄어들도록 강제 (KaKao WebView 중요) */
+#guestbookForm > * { min-width: 0; }
+#guestbookForm input,
+#guestbookForm textarea,
+#guestbookForm button { max-width: 100%; }
+
+</style>
+
+<style>
+  /* 공통 페이드인 */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 1.7s ease, transform 1.7s ease;
+    will-change: opacity, transform;
+  }
+  .fade-in.show {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>창민과 나연의 결혼식에 초대합니다</title>
+    <meta content="김창민과 김나연의 결혼식에 와서 축하해주세요~!" name="description"/>
+    <meta property="og:image" content="images/main-background.jpeg">
+    <meta property="fb:app_id" content="781066922265598" />
+    <meta property="fb:admins" content="Choi.Anderson"/>
+    <link href="images/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="images/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="images/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
+    <link href="css/ekko-lightbox.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gamja+Flower|Gugi|Noto+Serif+KR|Stylish|Sunflower:300"
+          rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.2.1.js"></script>
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                  tmp = item.split("=");
+                  if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        $(document).ready(function () {
+
+            function getText(){
+                var result = null;
+                $.ajax( { url: "https://raw.githubusercontent.com/AndersonChoi/wedding-card/master/README.md",
+                        type: 'get',
+                        dataType: 'html',
+                        async: false,
+                        success: function(data) { result = data; }
+                    }
+                );
+                FileReady = true;
+                return result;
+            }
+            var markdown_source = getText();
+            var comment_contents = markdown_source.split("축하의 말")[1];
+
+            var md = new Remarkable();
+            $("#comments").append(md.render(comment_contents));
+
+            
+            if(findGetParameter('gift')=='false'){
+                $('#gifts').hide();
+            }
+        });
 
 
 
 
-  </script>
+    </script>
+
+<style>
+  /* 로딩 중: 스크롤/상호작용 차단 + 본문/페이드 요소 완전 숨김 */
+  html[data-loading="1"] body { overflow: hidden; height: 100vh; overscroll-behavior: none; }
+  html[data-loading="1"] #pageContent {
+    opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px);
+  }
+  html[data-loading="1"] .fade-in { opacity: 0 !important; transform: translateY(8px) !important; }
+  #loadingOverlay { pointer-events: all; touch-action: none; } /* 오버레이가 이벤트 먹도록 */
+
+  /* 로딩 해제 후: 자연스런 페이드인 */
+  html:not([data-loading="1"]) #pageContent {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  html:not([data-loading="1"]) .fade-in.show {
+    opacity: 1; transform: none;
+  }
+
+  :root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* iOS 주소창 높이 문제 대응 */
+#loadingOverlay{
+  height: 100vh;
+  padding-top: calc(12px + var(--safe-top));
+  padding-bottom: calc(12px + var(--safe-bottom));
+}
+@supports (height: 100dvh){
+  #loadingOverlay{ height: 100dvh; }
+}
+
+/* 로딩 중 아이폰 바운스/튕김 방지 */
+html[data-loading="1"] body{
+  position: fixed; inset: 0; width: 100%;
+  overscroll-behavior: none;
+}
+
+/* 음악 컨트롤이 노치/상단바에 가리지 않도록 */
+.music-top{
+  top: calc(12px + var(--safe-top));
+}
+
+/* 터치 하이라이트/텍스트 드래그 최소화 */
+a, button { -webkit-tap-highlight-color: rgba(0,0,0,.08); }
+* { -webkit-touch-callout: none; }
+
+/* 이미지/아이프레임 반응형 보장 */
+img, iframe { max-width: 100%; height: auto; }
+
+/* 480px 이하(휴대폰) 최적화 */
+@media (max-width: 480px){
+  .ww-couple-name { font-size: 2.2em !important; }
+  .ww-title { font-size: 0.95em !important; letter-spacing: 0; }
+  .music-top{ gap: 8px; padding: 6px 10px; }
+  .volume-slider{ width: 60px; } /* 기본 30px → 모바일에서 조금 넉넉히 */
+  .gift-grid{ gap: 16px; }
+  .gift-card{ flex-basis: 100%; }
+  .map-icon{ width: 52px; height: auto; } /* 터치 타겟 유지 */
+}
+
+/* 360px 이하(아주 작은 기기) */
+@media (max-width: 360px){
+  .volume-slider{ width: 48px; }
+  .music-btn{ width: 32px; height: 32px; font-size: 12px; }
+}
+
+.ww-wedding-announcement {
+  position: relative; /* 기준 부모 */
+}
+
+.hero-sub {
+  position: absolute;
+  top: 10%; /* 사진 상단에서 5% (원하면 3%~10%로 조절) */
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;   /* 문구 길이만큼만 박스 차지 */
+  text-align: center;
+  color: #fff;
+  margin: 0;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.ww-announcement-container {
+  margin-top: 10em;   /* 글자 크기 기준 3줄 정도 아래로 */
+}
+
+
+</style>
+
+
+</head>
 
 <body id="top" class="no-scroll">
 
@@ -109,16 +290,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 <div class="page-content">
     <div class="div">
-        <div class="ww-home-page" id="home">
+        <div class="ww-home-page ww-title" id="home">
         </div>
         <div class="ww-nav-bar fixed-top bg-light">
-            <nav class="navbar navbar-expand-lg navbar-light" style="left: -1px;">
+            <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container">
                     <!-- 항상 보이는 사운드 컨트롤 (데스크톱 + 모바일 동일) -->
                   <div class="navbar-sound d-flex align-items-center ms-auto">
-                    <button class="btn btn-outline-secondary btn-sm rounded-circle playPause" aria-label="재생/일시정지"><img src="images/icon/speaker.png" alt="재생" width="14" height="14"></button>
+                      <button id="playPause" class="sound-btn" aria-label="재생/일시정지">
+                        <img src="images/icon/speaker.png" alt="재생" width="22" height="22">
+                      </button>
                   </div>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ww-navbarNav" aria-controls="ww-navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#ww-navbarNav"
+                            aria-controls="ww-navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse text-uppercase" id="ww-navbarNav">
@@ -135,9 +320,9 @@
         </div>
 
         <!-- ===== INVITATION + 연락 모달 ===== -->
-        <section class="invite">
-          <h3 class="invite-sub">INVITATION</h3>
-          <div class="invite-text">
+        <section class="invite fade-in">
+          <h3 class="invite-sub fade-in">INVITATION</h3>
+          <div class="invite-text fade-in">
             풍요로운 가을의 따뜻한 햇살 아래에서<br>
             아름다운 인연을 맺고자 합니다.<br><br>
             저희 둘 아름다운 약속의 자리에<br>
@@ -146,12 +331,12 @@
             영원한 증인이 되어주세요.
           </div>
 
-          <div class="invite-names">
+          <div class="invite-names fade-in">
             <div>김종길 · 김순화 의 아들 <b>창민</b></div>
             <div>김정태 · 박남희 의 딸 <b>나연</b></div>
           </div>
 
-          <button id="openContact" class="invite-btn">
+          <button id="openContact" class="invite-btn" type="button">
             <span class="ico"><img src="images/icon/tel.png" alt="전화" width="14" height="14"></span> 전화로 축하 인사하기
           </button>
         </section>
@@ -162,40 +347,40 @@
           <div class="contact-panel" role="document">
             <button class="contact-close" aria-label="닫기" data-close>✕</button>
 
-            <div class="contact-group">
-              <h4 id="contactTitle" class="contact-head groom"><img src="images/icon/tel.png" alt="전화" width="24" height="24"> 신랑측</h4>
+            <div class="contact-group fade-in">
+              <h4 id="contactTitle" class="contact-head groom fade-in"><img src="images/icon/tel.png" alt="전화" width="14" height="14"> 신랑측</h4>
               <hr>
-              <div class="contact-row">
-                <div class="who"><span class="role">신랑</span> <b>김창민</b></div>
+              <div class="contact-row fade-in">
+                <div class="who fade-in"><span class="role">신랑</span> <b>김창민</b></div>
                 <div class="acts">
-                  <a class="act" href="tel:010-3523-7831" aria-label="신랑에게 전화">📞</a>
-                  <a class="act" href="sms:010-3523-7831" aria-label="신랑에게 문자">✉️</a>
+                  <a class="act" href="tel:010-3523-7831" aria-label="신랑에게 전화"><img src="images/icon/tel.png" alt="전화" width="14" height="14"></a>
+                  <a class="act" href="sms:010-3523-7831" aria-label="신랑에게 문자"><img src="images/icon/mes.png" alt="문자" width="14" height="14"></a>
                 </div>
               </div>
-              <div class="contact-row">
-                <div class="who"><span class="role">혼주</span> <b>박미숙</b></div>
+              <div class="contact-row fade-in">
+                <div class="who fade-in"><span class="role">혼주</span> <b>김순화</b></div>
                 <div class="acts">
-                  <a class="act" href="tel:010-2345-6789" aria-label="혼주에게 전화">📞</a>
-                  <a class="act" href="mailto:mother@example.com" aria-label="혼주에게 이메일">✉️</a>
+                  <a class="act" href="tel:010-6730-7831" aria-label="혼주에게 전화"><img src="images/icon/tel.png" alt="전화" width="14" height="14"></a>
+                  <a class="act" href="sms:010-6730-7831" aria-label="혼주에게 문자"><img src="images/icon/mes.png" alt="문자" width="14" height="14"></a>
                 </div>
               </div>
             </div>
 
-            <div class="contact-group">
-              <h4 class="contact-head bride">❋ 신부측</h4>
+            <div class="contact-group fade-in">
+              <h4 class="contact-head bride fade-in"><img src="images/icon/tel.png" alt="전화" width="14" height="14"> 신부측</h4>
               <hr class="sep">
-              <div class="contact-row">
-                <div class="who"><span class="role">신부</span> <b>이유진</b></div>
+              <div class="contact-row fade-in">
+                <div class="who fade-in"><span class="role">신부</span> <b>김나연</b></div>
                 <div class="acts">
-                  <a class="act" href="tel:010-9876-5432" aria-label="신부에게 전화">📞</a>
-                  <a class="act" href="mailto:bride@example.com" aria-label="신부에게 이메일">✉️</a>
+                  <a class="act" href="tel:010-6646-9601" aria-label="신부에게 전화"><img src="images/icon/tel.png" alt="전화" width="14" height="14"></a>
+                  <a class="act" href="sms:010-6646-9601" aria-label="신부에게 문자"><img src="images/icon/mes.png" alt="문자" width="14" height="14"></a>
                 </div>
               </div>
-              <div class="contact-row">
-                <div class="who"><span class="role">혼주</span> <b>이성호</b></div>
+              <div class="contact-row fade-in">
+                <div class="who fade-in"><span class="role">혼주</span> <b>박남희</b></div>
                 <div class="acts">
-                  <a class="act" href="tel:010-8765-4321" aria-label="혼주에게 전화">📞</a>
-                  <a class="act" href="mailto:father@example.com" aria-label="혼주에게 이메일">✉️</a>
+                  <a class="act" href="tel:010-3579-9061" aria-label="혼주에게 전화"><img src="images/icon/tel.png" alt="전화" width="14" height="14"></a>
+                  <a class="act" href="sms:010-3579-9061" aria-label="혼주에게 문자"><img src="images/icon/mes.png" alt="문자" width="14" height="14"></a>
                 </div>
               </div>
             </div>
@@ -204,7 +389,7 @@
 
         <style>
         /* 레이아웃/타이포 */
-        .invite{ text-align:center; padding:40px 16px; background-color: #ecffec;}
+        .invite{ text-align:center; padding:40px 16px; background-color: #f8fff8;}
         .invite-sub{ letter-spacing:.3em; color:#7aa27a; margin-bottom:24px; font-weight:600; font-size:1em }
         .invite-text{ color:#444; line-height:2; margin:0 auto 28px; max-width:560px; }
         .invite-names{ color:#2c2c2c; line-height:2.4; margin:28px 0 22px; }
@@ -257,30 +442,36 @@
         </style>
 
         <script>
-        (function(){
-          const modal = document.getElementById('contactModal');
-          const openBtn = document.getElementById('openContact');
-
-          function open(){
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden'; // 뒷배경 스크롤 방지
-            // 포커스 이동
-            setTimeout(()=>modal.querySelector('.contact-close').focus(), 0);
-          }
-          function close(){
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-          }
-
-          openBtn.addEventListener('click', open);
-          modal.addEventListener('click', e=>{
-            if (e.target.hasAttribute('data-close')) close();
-          });
-          document.addEventListener('keydown', e=>{
-            if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') close();
-          });
-        })();
-        </script>
+          (function(){
+            const modal   = document.getElementById('contactModal');
+            const openBtn = document.getElementById('openContact');
+          
+            function open(){
+              modal.setAttribute('aria-hidden', 'false');
+              document.body.classList.add('modal-open'); // 스크롤 잠금 클래스
+              setTimeout(()=>modal.querySelector('.contact-close').focus(), 0);
+            }
+          
+            function close(){
+              modal.setAttribute('aria-hidden', 'true');
+              document.body.classList.remove('modal-open'); // 스크롤 잠금 해제
+            }
+          
+            openBtn.addEventListener('click', e=>{
+              e.preventDefault(); // 혹시 기본동작 방지
+              open();
+            });
+          
+            modal.addEventListener('click', e=>{
+              if (e.target.hasAttribute('data-close')) close();
+            });
+          
+            document.addEventListener('keydown', e=>{
+              if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') close();
+            });
+          })();
+          </script>
+          
 
         <div class="ww-section bg-light" id="events">
             <div class="container ww-wedding-event">
@@ -326,7 +517,7 @@
                             <ul>
                                 <li>
                                     <i class="text-muted fas fa-map-marker-alt"></i>
-                                    <span class="pl-2 text-muted fade-in">경기 수원시 호텔리츠컨벤션웨딩 7층 빌라드샬롯홀</span>
+                                    <span class="pl-2 text-muted fade-in">경기도 수원시 호텔리츠컨벤션웨딩 7층</span>
                                 </li>
                                 <li class="pt-2">
                                     <i class="text-muted far fa-calendar-alt"></i>
@@ -393,7 +584,7 @@
                 </div>
             </div>
         </div>
-        <div class="ww-section ww-rsvp-detail fade-in" id="map">
+        <div class="ww-section ww-rsvp-detail fade-in" id="map" style="transition-delay: 0ms; left: 1px;">
             <div class="container fade-in">
                 <div class="col text-center fade-in">
                     <h2 class="h1 text-center pb-3 ww-title fade-in" style="font-family: 'Noto Serif KR', serif;">오시는 길</h2>
@@ -407,16 +598,13 @@
                     <div class="col-md-12 fade-in">
                         <div class="my-3 text-center fade-in">
                             <a href="https://naver.me/xcnaMlVU">
-                                <img alt="naver-map" class="map-icon fade-in" id="naver-map"
-                                     src="images/map/naver-map.png"/>
+                                <img alt="naver-map" class="map-icon fade-in" id="naver-map" src="images/map/naver-map.png">
                             </a>
                             <a href="https://kko.kakao.com/q0GMsfThN7">
-                                <img alt="kakao-map" class="map-icon fade-in" id="kakao-map"
-                                     src="images/map/kakao-map.png"/>
+                                <img alt="kakao-map" class="map-icon fade-in" id="kakao-map" src="images/map/kakao-map.png">
                             </a>
                             <a href="https://maps.app.goo.gl/uWFYAzfjKz6hYebE7">
-                                <img alt="google-map" class="map-icon fade-in" id="google-map"
-                                     src="images/map/google-map.png"/>
+                                <img alt="google-map" class="map-icon fade-in" id="google-map" src="images/map/google-map.png">
                             </a>
                         </div>
                         <div class="col text-center fade-in">
@@ -425,7 +613,7 @@
                             </label>
                         </div>
                         <div class="my-3 fade-in">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3385.2785074011836!2d127.03078603758975!3d37.258632187871406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b436743e39b9f%3A0x2b780a971545dd3!2z7Zi47YWU66as7Lig7Luo67Kk7IWY7Juo65Sp!5e0!3m2!1sko!2skr!4v1754926689254!5m2!1sko!2skr" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3385.2785074011836!2d127.03078603758975!3d37.258632187871406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b436743e39b9f%3A0x2b780a971545dd3!2z7Zi47YWU66as7Lig7Luo67Kk7IWY7Juo65Sp!5e0!3m2!1sko!2skr!4v1754926689254!5m2!1sko!2skr" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen=""></iframe>
                         </div>
                     </div>
                 </div>
@@ -531,7 +719,7 @@
         --pay:#ffe000;         /* 카카오페이 노랑 */
         }
 
-        .gift-section{padding:48px 16px}
+        .gift-section{padding:48px 16px; background:#f8fff8}
         .gift-title{font-family:'Noto Serif KR',serif; text-align:center; margin:0 0 10px}
         .gift-desc{color:var(--sub); text-align:center; margin:0 0 28px; line-height:1.7}
 
@@ -860,24 +1048,29 @@ document.querySelector('.copy').addEventListener('click', function() {
   .navbar-sound .playPause {
     font-size: 12px; width: 28px; height: 28px;
   }
-  .wave { gap: 2px; }
 }
-
-
-/* 파동(이퀄라이저) */
-.wave { height: 20px; display:flex; align-items:flex-end; gap:3px; }
-.bar  { width:3px; height:6px; border-radius:2px; background:#6c757d; /* 부트스트랩 중간 회색 */
-        transform-origin:bottom; opacity:.9; animation:eq 800ms infinite ease-in-out; animation-play-state: paused; }
-.wave.on .bar { animation-play-state: running; }
-.bar:nth-child(1){ animation-delay: 0ms } .bar:nth-child(2){ animation-delay: 120ms }
-.bar:nth-child(3){ animation-delay: 240ms } .bar:nth-child(4){ animation-delay: 360ms }
-.bar:nth-child(5){ animation-delay: 480ms }
-@keyframes eq { 0%,100%{ transform:scaleY(0.35) } 50%{ transform:scaleY(1) } }
-@media (prefers-reduced-motion: reduce){ .bar{ animation:none } }
 </style>
 
-<!-- 기본 컨트롤 없이 숨겨둔 오디오 -->
-<audio id="player" src="mus.mp3" preload="auto"></audio>
+<!-- 반복재생 -->
+<audio id="player" src="mus.mp3" preload="auto" autoplay loop></audio>
+
+<script>
+  const audio   = document.getElementById('player');
+  const playBtn = document.getElementById('playPause');
+
+  playBtn.addEventListener('click', async () => {
+    try {
+      if (audio.paused) {
+        await audio.play();
+      } else {
+        audio.pause();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  });
+</script>
+
 
 
 
