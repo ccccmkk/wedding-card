@@ -72,7 +72,7 @@ body {
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #fff;
+    background-color: #fff !important;
 }
 
 
@@ -9883,11 +9883,11 @@ body {
 }
 
 .ww-couple-friends .carousel-indicators li {
-    background-color: #6c757d;
+    background-color: #ffffff;
 }
 
 .ww-couple-friends .carousel-indicators .active {
-    background-color: #f58a77;
+    background-color: #ffffff;
 }
 
 /* Photo Gallery Style */
@@ -10158,7 +10158,7 @@ body {
   /* 위치 버튼 */
   .cal-mapbtn{
     display:flex;gap:8px;align-items:center;justify-content:center;
-    background:#f8fff8;border:1px solid #f8fff8;border-radius:12px;
+    background:#ffffff;border:1px solid #ffffff;border-radius:12px;
     padding:14px 16px;text-decoration:none;color:#333
   }
   .cal-mapbtn:hover{background:#eee}
@@ -10208,3 +10208,5 @@ body {
     font-size: 18px;
     color: #f58a77;
   }
+
+  
